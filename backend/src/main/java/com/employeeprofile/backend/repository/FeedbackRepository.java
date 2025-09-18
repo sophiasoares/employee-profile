@@ -21,6 +21,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findByEmployeeAndStatusOrderByCreatedAtDesc(Employee employee, FeedbackStatus status);
     Page<Feedback> findByEmployeeAndStatusOrderByCreatedAtDesc(Employee employee, FeedbackStatus status, Pageable pageable);
     
+    // Basic queries by status
+List<Feedback> findByStatusOrderByCreatedAtDesc(FeedbackStatus status);
+Page<Feedback> findByStatusOrderByCreatedAtDesc(FeedbackStatus status, Pageable pageable);
+    
     // Public feedback only (for co-worker role)
     List<Feedback> findByEmployeeAndIsPublicTrueAndStatusOrderByCreatedAtDesc(Employee employee, FeedbackStatus status);
     Page<Feedback> findByEmployeeAndIsPublicTrueAndStatusOrderByCreatedAtDesc(Employee employee, FeedbackStatus status, Pageable pageable);

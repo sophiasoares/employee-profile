@@ -165,28 +165,12 @@ public interface AbsenceRequestRepository extends JpaRepository<AbsenceRequest, 
                                                  @Param("currentDate") LocalDate currentDate,
                                                  @Param("status") AbsenceStatus status);
     
-    // Statistics queries
+    // Simple statistics queries
     @Query("SELECT ar.absenceType, COUNT(ar) FROM AbsenceRequest ar WHERE ar.employee = :employee GROUP BY ar.absenceType")
     List<Object[]> countAbsenceTypesByEmployee(@Param("employee") Employee employee);
     
     @Query("SELECT ar.status, COUNT(ar) FROM AbsenceRequest ar WHERE ar.employee = :employee GROUP BY ar.status")
     List<Object[]> countAbsenceStatusByEmployee(@Param("employee") Employee employee);
-    
-    @Query("SELECT SUM(CASE WHEN ar.isHalfDay = true THEN 0.5 ELSE (ar.endDate - ar.startDate + 1) END) " +
-           "FROM AbsenceRequest ar WHERE ar.employee = :employee AND ar.status = :status")
-    Long calculateTotalAbsenceDaysForEmployee(@Param("employee") Employee employee, 
-                                            @Param("status") AbsenceStatus status);
-    
-    @Query("SELECT SUM(CASE WHEN ar.isHalfDay = true THEN 0.5 ELSE (ar.endDate - ar.startDate + 1) END) " +
-           "FROM AbsenceRequest ar WHERE " +
-           "ar.employee = :employee " +
-           "AND ar.absenceType = :absenceType " +
-           "AND ar.status = :status " +
-           "AND YEAR(ar.startDate) = :year")
-    Long calculateAbsenceDaysByTypeAndYear(@Param("employee") Employee employee,
-                                         @Param("absenceType") AbsenceType absenceType,
-                                         @Param("status") AbsenceStatus status,
-                                         @Param("year") int year);
     
     // Count queries
     long countByEmployeeAndStatus(Employee employee, AbsenceStatus status);
