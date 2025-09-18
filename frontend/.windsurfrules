@@ -1,0 +1,152 @@
+## Project Context
+### Project Description
+Employee Profile Management System - A single-page HR application supporting role-based data access for employee profiles, feedback collection, and absence requests.
+
+### Architecture Pattern
+Use MVVM (Model-View-ViewModel) architecture:
+- Model: Employee data, feedback, absence request entities from Spring Boot API
+- View: Single Angular page with dynamic role-based content
+- ViewModel: Angular components managing business logic and API integration
+- Services act as data access layer between ViewModels and Spring Boot REST API
+- Use Angular's reactive programming with RxJS observables for real-time updates
+
+### Tech Stack
+- Frontend: Angular 18+ with standalone components
+- Backend: Spring Boot REST API
+- Database: Supabase (PostgreSQL)
+- Language: TypeScript (strict mode enabled)
+- Styling: Angular Material + CSS
+- Forms: Reactive Forms (FormBuilder, Validators)
+- HTTP: HttpClient for Spring Boot API communication
+- State Management: Simple services with BehaviorSubject (no complex state management needed)
+- AI Integration: HuggingFace API for feedback enhancement
+- No routing required: Single-page application
+
+### Role-Based Access Control (RBAC)
+Implement three distinct user roles via UI controls (no authentication):
+1. **Manager/Owner**: Full CRUD access to all employee data
+2. **Co-worker**: Read-only access to non-sensitive data + feedback creation
+3. **Employee**: Profile viewing + absence request submission
+Role selection via dropdown/toggle in UI for demonstration purposes
+
+### Project Structure
+src/
+  ├── app/
+  │   ├── core/
+  │   │   ├── services/ (employee, feedback, absence, role-manager)
+  │   │   ├── models/ (interfaces for all entities)
+  │   │   └── interceptors/ (error handling, logging)
+  │   ├── shared/
+  │   │   ├── components/ (reusable UI components)
+  │   │   ├── directives/ (custom RBAC display directives)
+  │   │   └── pipes/ (data transformation)
+  │   ├── components/
+  │   │   ├── employee-profile/
+  │   │   ├── feedback-section/
+  │   │   ├── absence-request/
+  │   │   └── role-selector/
+  │   └── app.component.ts (main single-page component)
+  ├── assets/
+  └── environments/
+
+### Spring Boot API Integration
+- Create services for REST API communication with Spring Boot backend
+- API Base URL configured in environment files
+- Endpoints structure:
+  - GET/PUT /api/employees/{id} (profile data)
+  - GET/POST /api/feedback (feedback management)
+  - GET/POST /api/absence-requests (absence management)
+- Use HttpClient with proper error handling interceptors
+- Implement retry logic for failed requests
+- Use typed HTTP responses with proper error models
+
+### Supabase Integration (via Spring Boot)
+- All database operations handled by Spring Boot backend
+- Angular communicates only with Spring Boot REST API
+- No direct Supabase integration in Angular frontend
+- Spring Boot handles Supabase PostgreSQL connection and queries
+- Real-time updates via polling or WebSocket from Spring Boot
+
+### Single-Page Design
+- No Angular routing - all functionality in single view
+- Use Angular Material tabs or expansion panels for different sections
+- Implement dynamic UI based on selected role
+- Use *ngIf and custom directives for role-based content display
+- Responsive design for desktop and mobile viewing
+- Progressive disclosure of information based on user role
+
+### Coding Standards
+- Use Angular's OnPush change detection strategy for performance
+- Implement reactive forms exclusively (no template-driven forms)
+- All components must implement OnDestroy with takeUntil pattern
+- Use standalone components (avoid NgModules)
+- Follow Angular naming conventions (kebab-case for files, PascalCase for classes)
+- Implement proper TypeScript interfaces for all Spring Boot API responses
+- Use Angular Material components for consistent UI
+- Apply SOLID principles in service design
+
+### Component Architecture
+- Main app.component handles overall page layout and role management
+- Feature components for employee-profile, feedback, absence-requests
+- Smart components: Handle API calls and business logic
+- Dumb components: Pure presentation with @Input and @Output
+- Use Angular's dependency injection for service layer
+- Implement proper loading states and error handling
+
+### Form Implementation
+- Use reactive forms with FormBuilder and custom validators
+- Implement dynamic form validation based on selected role
+- Create reusable form components for employee data
+- Use Angular Material form controls with proper accessibility
+- Implement form state management with pristine/dirty tracking
+- Handle form submissions to Spring Boot API endpoints
+
+### API Error Handling
+- Implement global error handler service for Spring Boot API errors
+- Use Angular's ErrorHandler for uncaught exceptions
+- Provide user-friendly error messages for all API scenarios
+- Implement retry mechanisms for network failures
+- Show appropriate fallback UI for error states
+- Handle Spring Boot validation errors in forms
+
+### HuggingFace AI Integration
+- Direct integration with HuggingFace API from Angular frontend
+- Implement fallback mechanisms if AI service is unavailable
+- Cache AI-enhanced feedback in component state
+- Provide user option to accept/reject AI suggestions
+- Use loading indicators during AI processing
+- Handle AI API errors gracefully
+
+### Performance Optimization
+- Use OnPush change detection strategy throughout
+- Implement proper subscription management with takeUntil
+- Optimize HTTP requests with caching where appropriate
+- Use Angular's built-in performance budgets
+- Minimize API calls with smart caching strategies
+- Implement debounced search and input handling
+
+### Development Workflow
+- Use environment files for Spring Boot API configuration
+- Implement mock services for development without backend
+- Use Angular CLI for component generation
+- Set up proper TypeScript configuration for strict mode
+- Implement proper logging for development and production
+
+### Forbidden Practices
+- Do NOT implement any authentication/authorization logic in Angular
+- Avoid any/unknown types - use proper TypeScript interfaces
+- Never mix template-driven and reactive forms
+- Don't bypass Angular's security features
+- Avoid using ngIf for role-based rendering (use custom directive)
+- Don't store sensitive employee data in browser storage
+- Never expose backend API credentials in frontend code
+- Avoid deep component nesting (max 3 levels)
+- Don't implement routing (single-page application only)
+
+### Role Management
+- Implement role selection dropdown in header/sidebar
+- Use RoleService to manage current user role state
+- Create custom structural directive *hasRole for template rendering
+- Emit role changes to update UI dynamically
+- Store current role in component state (not localStorage)
+- Use role-based CSS classes for visual differentiation
