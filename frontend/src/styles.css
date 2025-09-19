@@ -1,1 +1,90 @@
-/* You can add global styles to this file, and also import other style files */
+@import './styles/variables.css';
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: var(--font-size-base);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-lg);
+}
+
+h4, h5, h6 {
+  font-size: var(--font-size-base);
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-sm) var(--spacing-base);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Form elements */
+input, textarea, select {
+  font-family: inherit;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm);
+  transition: var(--transition);
+  font-size: var(--font-size-sm);
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    font-size: var(--font-size-sm);
+  }
+  
+  h1 {
+    font-size: var(--font-size-xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-lg);
+  }
+}

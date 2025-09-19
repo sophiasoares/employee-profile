@@ -1,0 +1,56 @@
+:root {
+  /* Colors */
+  --primary-color: #366399;
+  --secondary-color: #a04f98;
+  
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  
+  --background-color: #f9faf1;
+  --border-color: #e5e7eb;
+  
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-white: #f9faf1;
+  
+  /* Role colors */
+  --role-manager: #c32356;
+  --role-coworker: #63bbe0;
+  --role-employee: #d74415;
+  
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;    /* 8px */
+  --spacing-sm: 0.75rem;   /* 12px */
+  --spacing-base: 1rem;    /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;     /* 48px */
+  
+  /* Border */
+  --border-radius: 0.5rem;  /* 8px */
+  --border-width: 1px;
+  
+  /* Shadow */
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Layout */
+  --container-width: 1200px;
+  
+  /* Transitions */
+  --transition: 0.2s ease;
+}
