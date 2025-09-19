@@ -1,0 +1,102 @@
+<div class="employee-list-container">
+  <div class="list-header">
+    <h2>
+      <i class="fas fa-users"></i>
+      Employee Directory
+    </h2>
+    <div class="list-stats">
+      {{ employeeDataService.filteredEmployees().length }} employees
+    </div>
+  </div>
+
+  @if (employeeDataService.isLoading()) {
+    <div class="loading-state">
+      <i class="fas fa-spinner fa-spin"></i>
+      Loading employees...
+    </div>
+  }
+
+  @if (employeeDataService.errorMessage()) {
+    <div class="error-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ employeeDataService.errorMessage() }}
+    </div>
+  }
+
+  @if (!employeeDataService.isLoading() && !employeeDataService.errorMessage()) {
+    <div class="employee-grid">
+      @for (employee of employeeDataService.filteredEmployees(); track employee.id) {
+        <div class="employee-card">
+          <div class="employee-header">
+            <div class="employee-avatar">
+              @if (employee.profilePictureUrl) {
+                <img [src]="employee.profilePictureUrl" [alt]="getFullName(employee)" />
+              } @else {
+                <i class="fas fa-user"></i>
+              }
+            </div>
+            <div class="employee-info">
+              <h3 class="employee-name">{{ getFullName(employee) }}</h3>
+              <p class="employee-position">{{ employee.position }}</p>
+              <span class="employment-type" [class]="getTypeClass(employee.employmentType)">
+                {{ formatEmploymentType(employee.employmentType) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="employee-details">
+            <div class="detail-item">
+              <i class="fas fa-envelope"></i>
+              <span>{{ employee.email }}</span>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-building"></i>
+              <span>{{ employee.department }}</span>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-calendar"></i>
+              @if (roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) {
+                <span>Hired {{ formatDate(employee.hireDate) }}</span>
+              } @else {
+                <span>Hire date: Private</span>
+              }
+            </div>
+
+            @if ((roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) && employee.phoneNumber) {
+              <div class="detail-item">
+                <i class="fas fa-phone"></i>
+                <span>{{ employee.phoneNumber }}</span>
+              </div>
+            }
+
+            @if (roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) {
+              <div class="detail-item salary">
+                <i class="fas fa-euro-sign"></i>
+                <span>{{ formatSalary(employee.salary) }}</span>
+              </div>
+            }
+          </div>
+
+          @if (roleService.permissions().canEditAllData) {
+            <div class="employee-actions">
+              <button class="btn-secondary">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    @if (employeeDataService.filteredEmployees().length === 0) {
+      <div class="empty-state">
+        <i class="fas fa-users-slash"></i>
+        <h3>No employees found</h3>
+        <p>You don't have access to view employee data or no employees exist.</p>
+      </div>
+    }
+  }
+</div>

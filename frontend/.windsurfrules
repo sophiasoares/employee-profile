@@ -29,26 +29,6 @@ Implement three distinct user roles via UI controls (no authentication):
 3. **Employee**: Profile viewing + absence request submission
 Role selection via dropdown/toggle in UI for demonstration purposes
 
-### Project Structure
-src/
-  ├── app/
-  │   ├── core/
-  │   │   ├── services/ (employee, feedback, absence, role-manager)
-  │   │   ├── models/ (interfaces for all entities)
-  │   │   └── interceptors/ (error handling, logging)
-  │   ├── shared/
-  │   │   ├── components/ (reusable UI components)
-  │   │   ├── directives/ (custom RBAC display directives)
-  │   │   └── pipes/ (data transformation)
-  │   ├── components/
-  │   │   ├── employee-profile/
-  │   │   ├── feedback-section/
-  │   │   ├── absence-request/
-  │   │   └── role-selector/
-  │   └── app.component.ts (main single-page component)
-  ├── assets/
-  └── environments/
-
 ### Spring Boot API Integration
 - Create services for REST API communication with Spring Boot backend
 - API Base URL configured in environment files

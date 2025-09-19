@@ -109,13 +109,25 @@ export class EmployeeDataService {
   // Filter employee data based on permissions
   private filterEmployeeData(employee: Employee): Employee {
     const permissions = this.roleService.permissions();
+    const currentUser = this.roleService.user();
+    const isOwnProfile = employee.id === currentUser.id;
     
-    if (permissions.canViewSensitiveData) {
-      return employee;
+    if (permissions.canViewSensitiveData || isOwnProfile) {
+      return employee; // Managers and self can see all data
     } else {
-      const { salary, phoneNumber, address, ...publicData } = employee;
-      return publicData as Employee;
+      // Co-workers cannot see sensitive data
+      return {
+        ...employee,
+        phoneNumber: undefined,
+        hireDate: '',
+        salary: undefined
+      };
     }
+  }
+
+  // Check if the given employee ID is the current user
+  isCurrentUser(employeeId: number): boolean {
+    return this.roleService.user().id === employeeId;
   }
 
   updateEmployee(id: number, updates: Partial<Employee>): Observable<Employee> {
@@ -155,24 +167,12 @@ export class EmployeeDataService {
     );
   }
 
-  approveAbsenceRequest(id: number): Observable<AbsenceRequest> {
-    const permissions = this.roleService.permissions();
-    const currentUser = this.roleService.user();
-    
-    if (!permissions.canApproveAbsences) {
-      throw new Error('You do not have permission to approve absence requests');
-    }
-
-    return this.employeeService.approveAbsenceRequest(id, currentUser.id).pipe(
-      map(updatedRequest => {
+  createAbsenceRequest(request: Omit<AbsenceRequest, 'id' | 'createdAt'>): Observable<AbsenceRequest> {
+    return this.employeeService.createAbsenceRequest(request).pipe(
+      map(newRequest => {
         const currentRequests = this.absenceRequests();
-        const index = currentRequests.findIndex(req => req.id === id); // find index of request to update
-        if (index !== -1) {
-          const newRequests = [...currentRequests];
-          newRequests[index] = updatedRequest;
-          this.absenceRequests.set(newRequests);
-        }
-        return updatedRequest;
+        this.absenceRequests.set([...currentRequests, newRequest]);
+        return newRequest;
       })
     );
   }

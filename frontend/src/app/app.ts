@@ -1,13 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { RoleDescriptionComponent } from './components/role-description/role-description.component';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { RoleService } from './services/role.service';
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, RoleDescriptionComponent],
+  imports: [HeaderComponent, RoleDescriptionComponent, EmployeeListComponent],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('employee-profile');
