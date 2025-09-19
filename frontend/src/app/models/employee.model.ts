@@ -12,9 +12,9 @@ export interface Employee {
   employeeId: string;
   position: string;
   department: string;
-  hireDate: string;
+  hireDate?: string;
   employmentType: EmploymentType;
-    salary?: number;
+  salary?: number;
   
   // Profile Information
   bio?: string;

@@ -119,7 +119,7 @@ export class EmployeeDataService {
       return {
         ...employee,
         phoneNumber: undefined,
-        hireDate: '',
+        hireDate: undefined,
         salary: undefined
       };
     }

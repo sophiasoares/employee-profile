@@ -55,14 +55,12 @@
               <span>{{ employee.department }}</span>
             </div>
             
-            <div class="detail-item">
-              <i class="fas fa-calendar"></i>
-              @if (roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) {
+            @if ((roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) && employee.hireDate) {
+              <div class="detail-item">
+                <i class="fas fa-calendar"></i>
                 <span>Hired {{ formatDate(employee.hireDate) }}</span>
-              } @else {
-                <span>Hire date: Private</span>
-              }
-            </div>
+              </div>
+            }
 
             @if ((roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) && employee.phoneNumber) {
               <div class="detail-item">
@@ -71,22 +69,22 @@
               </div>
             }
 
-            @if (roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) {
+            @if ((roleService.permissions().canViewSensitiveData || employeeDataService.isCurrentUser(employee.id)) && employee.salary) {
               <div class="detail-item salary">
                 <i class="fas fa-euro-sign"></i>
                 <span>{{ formatSalary(employee.salary) }}</span>
               </div>
             }
-          </div>
 
-          @if (roleService.permissions().canEditAllData) {
-            <div class="employee-actions">
-              <button class="btn-secondary">
-                <i class="fas fa-edit"></i>
-                Edit
-              </button>
-            </div>
-          }
+            @if (roleService.permissions().canEditAllData) {
+              <div class="employee-actions">
+                <button class="btn-secondary">
+                  <i class="fas fa-edit"></i>
+                  Edit
+                </button>
+              </div>
+            }
+          </div>
         </div>
       }
     </div>

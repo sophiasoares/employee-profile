@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Employee } from '../models/employee.model';
 import { Feedback } from '../models/feedback.model';
 import { AbsenceRequest } from '../models/absence-request.model';
@@ -15,15 +15,11 @@ export class EmployeeService {
 
   // Employee endpoints
   getAllEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${this.apiUrl}/employees`).pipe(
-      map(employees => employees.map(employee => this.filterSensitiveData(employee, false, false)))
-    );
+    return this.http.get<Employee[]>(`${this.apiUrl}/employees`);
   }
 
   getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiUrl}/employees/${id}`).pipe(
-      map(employee => this.filterSensitiveData(employee, false, false))
-    );
+    return this.http.get<Employee>(`${this.apiUrl}/employees/${id}`);
   }
 
   updateEmployee(id: number, employee: Partial<Employee>): Observable<Employee> {
@@ -36,21 +32,6 @@ export class EmployeeService {
 
   deleteEmployee(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/employees/${id}`);
-  }
-
-  // Sensitive data filtering based on role and current user
-  filterSensitiveData(employee: Employee, canViewSensitiveData: boolean, isOwnProfile: boolean): Employee {
-    if (canViewSensitiveData || isOwnProfile) {
-      return employee; // Managers and self can see all data
-    }
-    
-    // Co-workers cannot see sensitive data
-    return {
-      ...employee,
-      phoneNumber: undefined,
-      hireDate: '',
-      salary: undefined
-    };
   }
 
   // Feedback endpoints
