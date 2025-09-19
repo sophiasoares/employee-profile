@@ -1,0 +1,179 @@
+import { Injectable, computed, signal } from '@angular/core';
+import { Observable, map, catchError, of } from 'rxjs';
+import { EmployeeService } from './employee.service';
+import { RoleService } from './role.service';
+import { Employee } from '../models/employee.model';
+import { Feedback } from '../models/feedback.model';
+import { AbsenceRequest } from '../models/absence-request.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class EmployeeDataService {
+  private employees = signal<Employee[]>([]);
+  private feedback = signal<Feedback[]>([]);
+  private absenceRequests = signal<AbsenceRequest[]>([]);
+  private loading = signal<boolean>(false);
+  private error = signal<string | null>(null);
+
+  // filtered data based on current user permissions
+  filteredEmployees = computed(() => {
+    const allEmployees = this.employees();
+    const currentUser = this.roleService.user();
+    const permissions = this.roleService.permissions();
+
+    if (permissions.canViewAllEmployees) {
+      // Manager and co-worker can see all employees
+      return allEmployees.map(emp => this.filterEmployeeData(emp));
+    } else {
+      // Employee can only see their own data
+      return allEmployees
+        .filter(emp => emp.id === currentUser.id)
+        .map(emp => this.filterEmployeeData(emp));
+    }
+  });
+
+  filteredFeedback = computed(() => {
+    const allFeedback = this.feedback();
+    const currentUser = this.roleService.user();
+    const permissions = this.roleService.permissions();
+
+    if (permissions.canViewAllFeedback) {
+      // Manager and co-worker can see all feedback
+      return allFeedback;
+    } else {
+      // Employee can only see feedback given to them
+      return allFeedback.filter(fb => fb.employee.id === currentUser.id);
+    }
+  });
+
+  filteredAbsenceRequests = computed(() => {
+    const allRequests = this.absenceRequests();
+    const currentUser = this.roleService.user();
+    const permissions = this.roleService.permissions();
+
+    if (permissions.canApproveAbsences) {
+      // Manager can see all requests
+      return allRequests;
+    } else {
+      // Employee and co-worker can only see their own requests
+      return allRequests.filter(req => req.employee.id === currentUser.id);
+    }
+  });
+
+  readonly isLoading = this.loading.asReadonly();
+  readonly errorMessage = this.error.asReadonly();
+
+  constructor(
+    private employeeService: EmployeeService,
+    private roleService: RoleService
+  ) {}
+
+  loadAllData(): void {
+    this.loading.set(true);
+    this.error.set(null);
+
+    // Load employees
+    this.employeeService.getAllEmployees().pipe(
+      catchError(err => {
+        console.error('Error loading employees:', err);
+        this.error.set('Failed to load employee data');
+        return of([]);
+      })
+    ).subscribe(employees => {
+      this.employees.set(employees);
+    });
+
+    // Load feedback
+    this.employeeService.getAllFeedback().pipe(
+      catchError(err => {
+        console.error('Error loading feedback:', err);
+        return of([]);
+      })
+    ).subscribe(feedback => {
+      this.feedback.set(feedback);
+    });
+
+    // load absence requests
+    this.employeeService.getAllAbsenceRequests().pipe(
+      catchError(err => {
+        console.error('Error loading absence requests:', err);
+        return of([]);
+      })
+    ).subscribe(requests => {
+      this.absenceRequests.set(requests);
+      this.loading.set(false);
+    });
+  }
+
+  // Filter employee data based on permissions
+  private filterEmployeeData(employee: Employee): Employee {
+    const permissions = this.roleService.permissions();
+    
+    if (permissions.canViewSensitiveData) {
+      return employee;
+    } else {
+      const { salary, phoneNumber, address, ...publicData } = employee;
+      return publicData as Employee;
+    }
+  }
+
+  updateEmployee(id: number, updates: Partial<Employee>): Observable<Employee> {
+    const permissions = this.roleService.permissions();
+    
+    if (!permissions.canEditAllData) {
+      throw new Error('You do not have permission to edit employee data');
+    }
+
+    return this.employeeService.updateEmployee(id, updates).pipe(
+      map(updatedEmployee => {
+        const currentEmployees = this.employees();
+        const index = currentEmployees.findIndex(emp => emp.id === id);
+        if (index !== -1) {
+          const newEmployees = [...currentEmployees];
+          newEmployees[index] = updatedEmployee;
+          this.employees.set(newEmployees);
+        }
+        return updatedEmployee;
+      })
+    );
+  }
+
+  createFeedback(feedback: Omit<Feedback, 'id' | 'createdAt'>): Observable<Feedback> {
+    const permissions = this.roleService.permissions();
+    
+    if (!permissions.canGiveFeedback) {
+      throw new Error('You do not have permission to give feedback');
+    }
+
+    return this.employeeService.createFeedback(feedback).pipe(
+      map(newFeedback => {
+        const currentFeedback = this.feedback();
+        this.feedback.set([...currentFeedback, newFeedback]);
+        return newFeedback;
+      })
+    );
+  }
+
+  approveAbsenceRequest(id: number): Observable<AbsenceRequest> {
+    const permissions = this.roleService.permissions();
+    const currentUser = this.roleService.user();
+    
+    if (!permissions.canApproveAbsences) {
+      throw new Error('You do not have permission to approve absence requests');
+    }
+
+    return this.employeeService.approveAbsenceRequest(id, currentUser.id).pipe(
+      map(updatedRequest => {
+        const currentRequests = this.absenceRequests();
+        const index = currentRequests.findIndex(req => req.id === id); // find index of request to update
+        if (index !== -1) {
+          const newRequests = [...currentRequests];
+          newRequests[index] = updatedRequest;
+          this.absenceRequests.set(newRequests);
+        }
+        return updatedRequest;
+      })
+    );
+  }
+}
