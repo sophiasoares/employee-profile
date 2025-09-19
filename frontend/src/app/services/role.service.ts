@@ -20,38 +20,46 @@ export class RoleService {
     switch (role) {
       case UserRole.MANAGER:
         return {
-          canViewSalary: true,
           canViewAllEmployees: true,
           canApproveAbsences: true,
           canViewAllFeedback: true,
-          canManageEmployees: true
+          canGiveFeedback: true,
+          canViewFeedback: true,
+          canEditAllData: true,
+          canViewSensitiveData: true
         };
       
       case UserRole.CO_WORKER:
         return {
-          canViewSalary: false,
           canViewAllEmployees: true,
           canApproveAbsences: false,
-          canViewAllFeedback: false,
-          canManageEmployees: false
+          canViewAllFeedback: true,
+          canGiveFeedback: true,
+          canViewFeedback: true,
+          canEditAllData: false,
+          canViewSensitiveData: false
         };
       
       case UserRole.EMPLOYEE:
         return {
-          canViewSalary: false,
           canViewAllEmployees: false,
           canApproveAbsences: false,
           canViewAllFeedback: false,
-          canManageEmployees: false
+          canGiveFeedback: false,
+          canViewFeedback: true, // Can see feedback given to them
+          canEditAllData: false,
+          canViewSensitiveData: false
         };
       
       default:
         return {
-          canViewSalary: false,
           canViewAllEmployees: false,
           canApproveAbsences: false,
           canViewAllFeedback: false,
-          canManageEmployees: false
+          canGiveFeedback: false,
+          canViewFeedback: false,
+          canEditAllData: false,
+          canViewSensitiveData: false
         };
     }
   });

@@ -1,0 +1,98 @@
+.role-description-card {
+  background: var(--background-color);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow);
+}
+
+.role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-base);
+}
+
+.role-info h2 {
+  margin: 0 0 var(--spacing-xs) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+}
+
+.role-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.role-badge.manager {
+  background: var(--role-manager);
+}
+
+.role-badge.co-worker {
+  background: var(--role-coworker);
+}
+
+.role-badge.employee {
+  background: var(--role-employee);
+}
+
+.role-icon {
+  font-size: var(--font-size-2xl);
+  color: var(--text-secondary);
+}
+
+.role-description {
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+.permissions-section h3 {
+  margin: 0 0 var(--spacing-base) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+}
+
+.permissions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.permission-item i {
+  color: var(--success-color);
+  font-size: var(--font-size-sm);
+}
+
+@media (max-width: 768px) {
+  .role-header {
+    flex-direction: column;
+    gap: var(--spacing-base);
+  }
+  
+  .role-icon {
+    align-self: flex-start;
+  }
+  
+  .permissions-list {
+    grid-template-columns: 1fr;
+  }
+}

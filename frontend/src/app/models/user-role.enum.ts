@@ -12,9 +12,11 @@ export interface User {
 }
 
 export interface RolePermissions {
-  canViewSalary: boolean;
   canViewAllEmployees: boolean;
   canApproveAbsences: boolean;
   canViewAllFeedback: boolean;
-  canManageEmployees: boolean;
+  canGiveFeedback: boolean;
+  canViewFeedback: boolean;
+  canEditAllData: boolean;
+  canViewSensitiveData: boolean;
 }

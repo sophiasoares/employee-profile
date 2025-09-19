@@ -1,0 +1,35 @@
+<div class="role-description-card">
+  <div class="role-header">
+    <div class="role-info">
+      <h2>Welcome, {{ roleService.user().name }}</h2>
+      <span class="role-badge" [class]="getRoleClass()">
+        {{ formatRole(roleService.user().role) }}
+      </span>
+    </div>
+    <div class="role-icon">
+      @if (roleService.user().role === UserRole.MANAGER) {
+        <i class="fas fa-user-shield"></i>
+      }
+      @if (roleService.user().role === UserRole.CO_WORKER) {
+        <i class="fas fa-users"></i>
+      }
+      @if (roleService.user().role === UserRole.EMPLOYEE) {
+        <i class="fas fa-user"></i>
+      }
+    </div>
+  </div>
+  
+  <p class="role-description">{{ getRoleDescription() }}</p>
+  
+  <div class="permissions-section">
+    <h3>Your Permissions</h3>
+    <ul class="permissions-list">
+      @for (permission of getPermissionsList(); track permission) {
+        <li class="permission-item">
+          <i class="fas fa-check-circle"></i>
+          {{ permission }}
+        </li>
+      }
+    </ul>
+  </div>
+</div>

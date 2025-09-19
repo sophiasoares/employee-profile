@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
+import { RoleDescriptionComponent } from './components/role-description/role-description.component';
 import { RoleService } from './services/role.service';
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, RoleDescriptionComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
