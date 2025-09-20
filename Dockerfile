@@ -19,7 +19,8 @@ WORKDIR /app
 COPY backend/ ./
 
 # Copy built frontend to Spring Boot static resources
-COPY --from=frontend-build /app/frontend/dist/employee-profile/ ./src/main/resources/static/
+# Angular 20+ outputs to dist/employee-profile/browser by default
+COPY --from=frontend-build /app/frontend/dist/employee-profile/browser/ ./src/main/resources/static/
 
 # Build Spring Boot application
 RUN mvn clean package -DskipTests
