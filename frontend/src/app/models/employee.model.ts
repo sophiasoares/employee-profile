@@ -1,5 +1,7 @@
+import { EmployeeRole } from './employee-role.enum';
+
 export interface Employee {
-  id: number;
+  id: number; // for db
   
   // Personal info
   firstName: string;
@@ -9,12 +11,15 @@ export interface Employee {
   address?: string;
   
   // Employment info
-  employeeId: string;
+  employeeId: string; // for general use, something like EMP001
   position: string;
   department: string;
   hireDate?: string;
   employmentType: EmploymentType;
   salary?: number;
+  
+  // Role and permissions
+  role: EmployeeRole;
   
   // Profile info
   bio?: string;

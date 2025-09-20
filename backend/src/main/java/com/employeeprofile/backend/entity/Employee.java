@@ -61,6 +61,10 @@ public class Employee {
     @Column(name = "employment_type")
     private EmploymentType employmentType = EmploymentType.FULL_TIME;
     
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private EmployeeRole role = EmployeeRole.EMPLOYEE;
+    
     @DecimalMin(value = "0.0", inclusive = false, message = "Salary must be positive")
     @Digits(integer = 10, fraction = 2, message = "Salary format is invalid")
     private BigDecimal salary;
@@ -128,6 +132,9 @@ public class Employee {
     
     public EmploymentType getEmploymentType() { return employmentType; }
     public void setEmploymentType(EmploymentType employmentType) { this.employmentType = employmentType; }
+    
+    public EmployeeRole getRole() { return role; }
+    public void setRole(EmployeeRole role) { this.role = role; }
     
     public BigDecimal getSalary() { return salary; }
     public void setSalary(BigDecimal salary) { this.salary = salary; }

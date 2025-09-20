@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RoleService } from '../../services/role.service';
 import { CommonModule } from '@angular/common';
-import { UserRole } from '../../models/user-role.enum';
+import { EmployeeRole } from '../../models/employee-role.enum';
 
 @Component({
   selector: 'app-role-description',
@@ -11,7 +11,7 @@ import { UserRole } from '../../models/user-role.enum';
   styleUrl: './role-description.component.css'
 })
 export class RoleDescriptionComponent {
-  protected readonly UserRole = UserRole;
+  protected readonly EmployeeRole = EmployeeRole;
 
   constructor(protected roleService: RoleService) {}
 
@@ -25,11 +25,11 @@ export class RoleDescriptionComponent {
 
   getRoleDescription(): string {
     switch (this.roleService.user().role) {
-      case UserRole.MANAGER:
+      case EmployeeRole.MANAGER:
         return 'You have full access to all employee data, can approve absence requests, manage team feedback, and edit all information.';
-      case UserRole.CO_WORKER:
+      case EmployeeRole.CO_WORKER:
         return 'You can view non-sensitive colleague data, give and see all feedback, and request absences.';
-      case UserRole.EMPLOYEE:
+      case EmployeeRole.EMPLOYEE:
         return 'You can view your own profile, request absences, and see feedback that was given to you.';
       default:
         return '';

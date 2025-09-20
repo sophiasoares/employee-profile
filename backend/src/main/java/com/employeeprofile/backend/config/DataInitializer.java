@@ -35,43 +35,43 @@ public class DataInitializer implements CommandLineRunner {
         // Create employees with complete data
         Employee ceo = createEmployee("EMP001", "Sarah", "Johnson", "sarah.johnson@company.com", 
                 "CEO", "Executive", new BigDecimal("150000"),
-                "Hauptstraße 123, 10115 Berlin, Germany", "https://i.pravatar.cc/150?img=1");
+                "Hauptstraße 123, 10115 Berlin, Germany", "https://i.pravatar.cc/150?img=1", EmployeeRole.MANAGER);
 
         Employee hrManager = createEmployee("EMP002", "Michael", "Chen", "michael.chen@company.com", 
                 "HR Manager", "Human Resources", new BigDecimal("95000"),
-                "Friedrichstraße 45, 10117 Berlin, Germany", "https://i.pravatar.cc/150?img=2");
+                "Friedrichstraße 45, 10117 Berlin, Germany", "https://i.pravatar.cc/150?img=2", EmployeeRole.MANAGER);
 
         Employee devManager = createEmployee("EMP003", "Emily", "Rodriguez", "emily.rodriguez@company.com", 
                 "Development Manager", "Engineering", new BigDecimal("110000"),
-                "Unter den Linden 78, 10117 Berlin, Germany", "https://i.pravatar.cc/150?img=3");
+                "Unter den Linden 78, 10117 Berlin, Germany", "https://i.pravatar.cc/150?img=3", EmployeeRole.CO_WORKER);
 
         Employee developer1 = createEmployee("EMP004", "James", "Wilson", "james.wilson@company.com", 
                 "Senior Developer", "Engineering", new BigDecimal("85000"),
-                "Alexanderplatz 12, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=4");
+                "Alexanderplatz 12, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=4", EmployeeRole.EMPLOYEE);
 
         Employee developer2 = createEmployee("EMP005", "Lisa", "Anderson", "lisa.anderson@company.com", 
                 "Frontend Developer", "Engineering", new BigDecimal("75000"),
-                "Potsdamer Platz 9, 10785 Berlin, Germany", "https://i.pravatar.cc/150?img=5");
+                "Potsdamer Platz 9, 10785 Berlin, Germany", "https://i.pravatar.cc/150?img=5", EmployeeRole.EMPLOYEE);
 
         Employee designer = createEmployee("EMP006", "Anna", "Mueller", "anna.mueller@company.com", 
                 "UX Designer", "Design", new BigDecimal("72000"),
-                "Hackescher Markt 34, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=6");
+                "Hackescher Markt 34, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=6", EmployeeRole.CO_WORKER);
 
         Employee intern = createEmployee("EMP007", "Tom", "Schmidt", "tom.schmidt@company.com", 
                 "Software Intern", "Engineering", new BigDecimal("35000"),
-                "Prenzlauer Berg 67, 10405 Berlin, Germany", "https://i.pravatar.cc/150?img=7");
+                "Prenzlauer Berg 67, 10405 Berlin, Germany", "https://i.pravatar.cc/150?img=7", EmployeeRole.EMPLOYEE);
 
         Employee partTimeMarketing = createEmployee("EMP008", "Sophie", "Weber", "sophie.weber@company.com", 
                 "Part-time Marketing Coordinator", "Marketing", new BigDecimal("45000"),
-                "Kreuzberg 89, 10961 Berlin, Germany", "https://i.pravatar.cc/150?img=8");
+                "Kreuzberg 89, 10961 Berlin, Germany", "https://i.pravatar.cc/150?img=8", EmployeeRole.EMPLOYEE);
 
         Employee securityConsultant = createEmployee("EMP009", "Marcus", "Fischer", "marcus.fischer@company.com", 
                 "IT Security Consultant", "Engineering", new BigDecimal("95000"),
-                "Charlottenburg 234, 10623 Berlin, Germany", "https://i.pravatar.cc/150?img=9");
+                "Charlottenburg 234, 10623 Berlin, Germany", "https://i.pravatar.cc/150?img=9", EmployeeRole.CO_WORKER);
 
         Employee strategyConsultant = createEmployee("EMP010", "Elena", "Kowalski", "elena.kowalski@company.com", 
                 "Business Strategy Consultant", "Consulting", new BigDecimal("120000"),
-                "Mitte 456, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=10");
+                "Mitte 456, 10178 Berlin, Germany", "https://i.pravatar.cc/150?img=10", EmployeeRole.CO_WORKER);
 
         // Save employees
         employeeRepository.save(ceo);
@@ -138,7 +138,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private Employee createEmployee(String employeeId, String firstName, String lastName, String email,
                                    String position, String department, BigDecimal salary,
-                                   String address, String profilePicture) {
+                                   String address, String profilePicture, EmployeeRole role) {
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
         employee.setFirstName(firstName);
@@ -163,6 +163,7 @@ public class DataInitializer implements CommandLineRunner {
         employee.setPhoneNumber("+49" + (int)(Math.random() * 900000000 + 100000000));
         employee.setAddress(address);
         employee.setProfilePictureUrl(profilePicture);
+        employee.setRole(role);
         
         // Add some skills
         switch (department) {

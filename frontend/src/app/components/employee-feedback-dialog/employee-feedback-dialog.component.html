@@ -1,0 +1,181 @@
+@if (isOpen) {
+  <div class="dialog-overlay" (click)="onClose()">
+    <div class="dialog-container" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <h2>
+          <i class="fas fa-comments"></i>
+          Feedback for {{ employee ? getFullName(employee) : 'Employee' }}
+        </h2>
+        <button class="close-button" (click)="onClose()" type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="dialog-content">
+        @if (isLoading) {
+          <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            Loading feedback...
+          </div>
+        }
+
+        @if (errorMessage) {
+          <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ errorMessage }}
+          </div>
+        }
+
+        @if (!isLoading && !errorMessage) {
+          <!-- Feedback Received Section -->
+          <div class="feedback-section">
+            <h3>
+              <i class="fas fa-inbox"></i>
+              Feedback Received ({{ feedbackReceived.length }})
+            </h3>
+            
+            @if (feedbackReceived.length === 0) {
+              <div class="empty-state">
+                <i class="fas fa-comment-slash"></i>
+                <p>No feedback received yet</p>
+              </div>
+            } @else {
+              <div class="feedback-list">
+                @for (feedback of feedbackReceived; track feedback.id) {
+                  <div class="feedback-item" [class]="getFeedbackTypeClass(feedback.feedbackType)">
+                    <div class="feedback-header">
+                      <div class="feedback-from">
+                        <i class="fas fa-user"></i>
+                        <span class="from-name">From: {{ getFullName(feedback.feedbackGiver) }}</span>
+                      </div>
+                      <div class="feedback-meta">
+                        <span class="feedback-type">{{ formatFeedbackType(feedback.feedbackType) }}</span>
+                      </div>
+                    </div>
+                    <div class="feedback-content">
+                      {{ feedback.content }}
+                    </div>
+                    @if (feedback.isAiEnhanced) {
+                      <div class="ai-enhanced-badge">
+                        <i class="fas fa-robot"></i>
+                        AI Enhanced
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Feedback Given Section -->
+          <div class="feedback-section">
+            <h3>
+              <i class="fas fa-paper-plane"></i>
+              Feedback Given ({{ feedbackGiven.length }})
+            </h3>
+            
+            @if (feedbackGiven.length === 0) {
+              <div class="empty-state">
+                <i class="fas fa-comment-slash"></i>
+                <p>No feedback given yet</p>
+              </div>
+            } @else {
+              <div class="feedback-list">
+                @for (feedback of feedbackGiven; track feedback.id) {
+                  <div class="feedback-item" [class]="getFeedbackTypeClass(feedback.feedbackType)">
+                    <div class="feedback-header">
+                      <div class="feedback-to">
+                        <i class="fas fa-user"></i>
+                        <span class="to-name">To: {{ getFullName(feedback.employee) }}</span>
+                      </div>
+                      <div class="feedback-meta">
+                        <span class="feedback-type">{{ formatFeedbackType(feedback.feedbackType) }}</span>
+                      </div>
+                    </div>
+                    <div class="feedback-content">
+                      {{ feedback.content }}
+                    </div>
+                    @if (feedback.isAiEnhanced) {
+                      <div class="ai-enhanced-badge">
+                        <i class="fas fa-robot"></i>
+                        AI Enhanced
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Write feedback section -->
+          @if (canGiveFeedback() && !isViewingOwnProfile() && !isLoading && !errorMessage) {
+            <div class="feedback-section write-feedback-section">
+              <h3>
+                <i class="fas fa-pen"></i>
+                Write Feedback for {{ employee ? getFullName(employee) : 'Employee' }}
+              </h3>
+
+              <form [formGroup]="feedbackForm" (ngSubmit)="onSubmitFeedback()" class="feedback-form">
+                @if (submitErrorMessage) {
+                  <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ submitErrorMessage }}
+                  </div>
+                }
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="feedbackType">Feedback Type *</label>
+                    <select
+                      id="feedbackType"
+                      formControlName="feedbackType"
+                      class="form-control"
+                      [class.error]="getFieldError('feedbackType')"
+                    >
+                      @for (type of feedbackTypes; track type) {
+                        <option [value]="type">{{ formatFeedbackType(type) }}</option>
+                      }
+                    </select>
+                    @if (getFieldError('feedbackType')) {
+                      <span class="field-error">{{ getFieldError('feedbackType') }}</span>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="content">Feedback Content *</label>
+                  <textarea
+                    id="content"
+                    formControlName="content"
+                    class="form-control"
+                    [class.error]="getFieldError('content')"
+                    rows="4"
+                    placeholder="Write your feedback here..."
+                  ></textarea>
+                  @if (getFieldError('content')) {
+                    <span class="field-error">{{ getFieldError('content') }}</span>
+                  }
+                  <div class="character-count">
+                    {{ feedbackForm.get('content')?.value?.length || 0 }}/1000 characters
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary" [disabled]="feedbackForm.invalid || isSubmitting">
+                    @if (isSubmitting) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Submitting...
+                    } @else {
+                      <i class="fas fa-paper-plane"></i>
+                      Submit Feedback
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

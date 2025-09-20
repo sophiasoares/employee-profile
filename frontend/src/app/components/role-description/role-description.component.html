@@ -1,19 +1,19 @@
 <div class="role-description-card">
   <div class="role-header">
     <div class="role-info">
-      <h2>Welcome, {{ roleService.user().name }}</h2>
+      <h2>Welcome, {{ roleService.user().firstName }}</h2>
       <span class="role-badge" [class]="getRoleClass()">
         {{ formatRole(roleService.user().role) }}
       </span>
     </div>
     <div class="role-icon">
-      @if (roleService.user().role === UserRole.MANAGER) {
+      @if (roleService.user().role === EmployeeRole.MANAGER) {
         <i class="fas fa-user-shield"></i>
       }
-      @if (roleService.user().role === UserRole.CO_WORKER) {
+      @if (roleService.user().role === EmployeeRole.CO_WORKER) {
         <i class="fas fa-users"></i>
       }
-      @if (roleService.user().role === UserRole.EMPLOYEE) {
+      @if (roleService.user().role === EmployeeRole.EMPLOYEE) {
         <i class="fas fa-user"></i>
       }
     </div>

@@ -4,11 +4,12 @@ import { EmployeeDataService } from '../../services/employee-data.service';
 import { RoleService } from '../../services/role.service';
 import { Employee, getFullName } from '../../models/employee.model';
 import { EmployeeEditDialogComponent } from '../employee-edit-dialog/employee-edit-dialog.component';
+import { EmployeeFeedbackDialogComponent } from '../employee-feedback-dialog/employee-feedback-dialog.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, EmployeeEditDialogComponent],
+  imports: [CommonModule, EmployeeEditDialogComponent, EmployeeFeedbackDialogComponent],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
@@ -17,6 +18,10 @@ export class EmployeeListComponent implements OnInit {
   // for the edit dialog
   isEditDialogOpen = false;
   selectedEmployee: Employee | null = null;
+
+  // for the feedback dialog
+  isFeedbackDialogOpen = false;
+  selectedEmployeeForFeedback: Employee | null = null;
 
   constructor(
     protected employeeDataService: EmployeeDataService,
@@ -59,6 +64,7 @@ export class EmployeeListComponent implements OnInit {
     }).format(salary);
   }
 
+  // Edit dialog methods
   openEditDialog(employee: Employee): void {
     this.selectedEmployee = employee;
     this.isEditDialogOpen = true;
@@ -72,5 +78,16 @@ export class EmployeeListComponent implements OnInit {
   onEmployeeUpdated(updatedEmployee: Employee): void {
     // for the future: create a snackbar
     console.log('Employee updated successfully:', updatedEmployee);
+  }
+
+  // Feedback dialog methods
+  openFeedbackDialog(employee: Employee): void {
+    this.selectedEmployeeForFeedback = employee;
+    this.isFeedbackDialogOpen = true;
+  }
+
+  closeFeedbackDialog(): void {
+    this.isFeedbackDialogOpen = false;
+    this.selectedEmployeeForFeedback = null;
   }
 }

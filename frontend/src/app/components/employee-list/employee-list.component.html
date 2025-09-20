@@ -76,12 +76,20 @@
               </div>
             }
 
-            @if (roleService.permissions().canEditAllData) {
+            @if (roleService.permissions().canEditAllData || roleService.permissions().canViewAllFeedback) {
               <div class="employee-actions">
-                <button class="btn-secondary" (click)="openEditDialog(employee)">
-                  <i class="fas fa-edit"></i>
-                  Edit
-                </button>
+                @if (roleService.permissions().canViewAllFeedback) {
+                  <button class="btn-secondary" (click)="openFeedbackDialog(employee)">
+                    <i class="fas fa-comments"></i>
+                    Feedback
+                  </button>
+                }
+                @if (roleService.permissions().canEditAllData) {
+                  <button class="btn-secondary" (click)="openEditDialog(employee)">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                  </button>
+                }
               </div>
             }
           </div>
@@ -104,4 +112,10 @@
     (closeDialog)="closeEditDialog()"
     (employeeUpdated)="onEmployeeUpdated($event)">
   </app-employee-edit-dialog>
+
+  <app-employee-feedback-dialog
+    [employee]="selectedEmployeeForFeedback"
+    [isOpen]="isFeedbackDialogOpen"
+    (closeDialog)="closeFeedbackDialog()">
+  </app-employee-feedback-dialog>
 </div>

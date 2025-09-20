@@ -44,10 +44,10 @@ export class EmployeeService {
   }
 
   getFeedbackByEmployee(employeeId: number): Observable<Feedback[]> {
-    return this.http.get<Feedback[]>(`${this.apiUrl}/feedback/by-employee/${employeeId}`);
+    return this.http.get<Feedback[]>(`${this.apiUrl}/feedback/given-by/${employeeId}`);
   }
 
-  createFeedback(feedback: Omit<Feedback, 'id' | 'createdAt' | 'updatedAt'>): Observable<Feedback> {
+  createFeedback(feedback: Omit<Feedback, 'id'>): Observable<Feedback> {
     return this.http.post<Feedback>(`${this.apiUrl}/feedback`, feedback);
   }
 

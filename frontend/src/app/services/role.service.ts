@@ -1,16 +1,22 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { UserRole, User, RolePermissions } from '../models/user-role.enum';
+import { EmployeeRole, RolePermissions } from '../models/employee-role.enum';
+import { Employee, EmploymentType } from '../models/employee.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleService {
-  // current user. starts with manager for demo
-  private currentUser = signal<User>({
+  // current user as Employee with role. starts with manager for demo
+  private currentUser = signal<Employee>({
     id: 1,
-    name: 'Sarah Johnson',
-    role: UserRole.MANAGER,
-    email: 'sarah.johnson@company.com'
+    firstName: 'Sarah',
+    lastName: 'Johnson',
+    email: 'sarah.johnson@company.com',
+    employeeId: 'EMP001',
+    position: 'CEO',
+    department: 'Executive',
+    employmentType: EmploymentType.FULL_TIME,
+    role: EmployeeRole.MANAGER
   });
 
   // permissions based on current role
@@ -18,7 +24,7 @@ export class RoleService {
     const role = this.currentUser().role;
     
     switch (role) {
-      case UserRole.MANAGER:
+      case EmployeeRole.MANAGER:
         return {
           canViewAllEmployees: true,
           canApproveAbsences: true,
@@ -29,7 +35,7 @@ export class RoleService {
           canViewSensitiveData: true
         };
       
-      case UserRole.CO_WORKER:
+      case EmployeeRole.CO_WORKER:
         return {
           canViewAllEmployees: true,
           canApproveAbsences: false,
@@ -40,7 +46,7 @@ export class RoleService {
           canViewSensitiveData: false
         };
       
-      case UserRole.EMPLOYEE:
+      case EmployeeRole.EMPLOYEE:
         return {
           canViewAllEmployees: false,
           canApproveAbsences: false,
@@ -67,37 +73,52 @@ export class RoleService {
   // expose current user as readonly signal
   user = this.currentUser.asReadonly();
 
-  // demo users for role switching
-  private demoUsers: User[] = [
+  // demo employees for role switching
+  private demoEmployees: Employee[] = [
     {
       id: 1,
-      name: 'Sarah Johnson',
-      role: UserRole.MANAGER,
-      email: 'sarah.johnson@company.com'
+      firstName: 'Sarah',
+      lastName: 'Johnson',
+      email: 'sarah.johnson@company.com',
+      employeeId: 'EMP001',
+      position: 'CEO',
+      department: 'Executive',
+      employmentType: EmploymentType.FULL_TIME,
+      role: EmployeeRole.MANAGER
     },
     {
       id: 3,
-      name: 'Emily Rodriguez',
-      role: UserRole.CO_WORKER,
-      email: 'emily.rodriguez@company.com'
+      firstName: 'Emily',
+      lastName: 'Rodriguez',
+      email: 'emily.rodriguez@company.com',
+      employeeId: 'EMP002',
+      position: 'Team Lead',
+      department: 'Marketing',
+      employmentType: EmploymentType.FULL_TIME,
+      role: EmployeeRole.CO_WORKER
     },
     {
       id: 4,
-      name: 'James Wilson',
-      role: UserRole.EMPLOYEE,
-      email: 'james.wilson@company.com'
+      firstName: 'James',
+      lastName: 'Wilson',
+      email: 'james.wilson@company.com',
+      employeeId: 'EMP003',
+      position: 'Software Engineer',
+      department: 'IT',
+      employmentType: EmploymentType.FULL_TIME,
+      role: EmployeeRole.EMPLOYEE
     }
   ];
 
-  getDemoUsers(): User[] {
-    return this.demoUsers;
+  getDemoEmployees(): Employee[] {
+    return this.demoEmployees;
   }
 
-  switchRole(user: User): void {
-    this.currentUser.set(user);
+  switchRole(employee: Employee): void {
+    this.currentUser.set(employee);
   }
 
-  getCurrentRole(): UserRole {
+  getCurrentRole(): EmployeeRole {
     return this.currentUser().role;
   }
 
