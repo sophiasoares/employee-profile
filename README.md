@@ -14,6 +14,7 @@ Visit the live application: [https://employee-profile-system.onrender.com](https
 - **Backend**: Spring Boot 3.5+ with Java 17
 - **Database**: Supabase (PostgreSQL)
 - **AI Enhancement**: OpenRouter API with Mistral 7B
+- **Deployment**: Docker multi-stage build
 - **Build Tools**: Maven (Backend), Angular CLI (Frontend)
 
 ## 🎯 Key Features
@@ -89,6 +90,21 @@ I hosted the application on Render. You can find it here: [https://employee-prof
 - **Maven 3.6+**
 - **Supabase account** (for database)
 - **OpenRouter API token** (for AI enhancement)
+- **Docker** (for containerization)
+
+### Docker Setup
+
+1. Build the Docker image:
+   ```bash
+   docker build -t employee-profile-system .
+   ```
+
+2. Run the Docker container:
+   ```bash
+   docker run -p 8080:8080 employee-profile-system
+   ```
+
+3. Access the application at `http://localhost:8080`
 
 ### Backend Setup
 
