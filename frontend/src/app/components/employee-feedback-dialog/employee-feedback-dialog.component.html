@@ -27,6 +27,74 @@
         }
 
         @if (!isLoading && !errorMessage) {
+          <!-- Write feedback section -->
+          @if (canGiveFeedback() && !isViewingOwnProfile()) {
+            <div class="feedback-section write-feedback-section">
+              <h3>
+                <i class="fas fa-pen"></i>
+                Write Feedback for {{ employee ? getFullName(employee) : 'Employee' }}
+              </h3>
+
+              <form [formGroup]="feedbackForm" (ngSubmit)="onSubmitFeedback()" class="feedback-form">
+                @if (submitErrorMessage) {
+                  <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ submitErrorMessage }}
+                  </div>
+                }
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="feedbackType">Feedback Type *</label>
+                    <select
+                      id="feedbackType"
+                      formControlName="feedbackType"
+                      class="form-control"
+                      [class.error]="getFieldError('feedbackType')"
+                    >
+                      @for (type of feedbackTypes; track type) {
+                        <option [value]="type">{{ formatFeedbackType(type) }}</option>
+                      }
+                    </select>
+                    @if (getFieldError('feedbackType')) {
+                      <span class="field-error">{{ getFieldError('feedbackType') }}</span>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="content">Feedback Content *</label>
+                  <textarea
+                    id="content"
+                    formControlName="content"
+                    class="form-control"
+                    [class.error]="getFieldError('content')"
+                    rows="4"
+                    placeholder="Write your feedback here..."
+                  ></textarea>
+                  @if (getFieldError('content')) {
+                    <span class="field-error">{{ getFieldError('content') }}</span>
+                  }
+                  <div class="character-count">
+                    {{ feedbackForm.get('content')?.value?.length || 0 }}/1000 characters
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn-primary" [disabled]="feedbackForm.invalid || isSubmitting">
+                    @if (isSubmitting) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Submitting...
+                    } @else {
+                      <i class="fas fa-paper-plane"></i>
+                      Submit Feedback
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+          }
+          
           <!-- Feedback Received Section -->
           <div class="feedback-section">
             <h3>
@@ -106,74 +174,6 @@
               </div>
             }
           </div>
-
-          <!-- Write feedback section -->
-          @if (canGiveFeedback() && !isViewingOwnProfile() && !isLoading && !errorMessage) {
-            <div class="feedback-section write-feedback-section">
-              <h3>
-                <i class="fas fa-pen"></i>
-                Write Feedback for {{ employee ? getFullName(employee) : 'Employee' }}
-              </h3>
-
-              <form [formGroup]="feedbackForm" (ngSubmit)="onSubmitFeedback()" class="feedback-form">
-                @if (submitErrorMessage) {
-                  <div class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    {{ submitErrorMessage }}
-                  </div>
-                }
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="feedbackType">Feedback Type *</label>
-                    <select
-                      id="feedbackType"
-                      formControlName="feedbackType"
-                      class="form-control"
-                      [class.error]="getFieldError('feedbackType')"
-                    >
-                      @for (type of feedbackTypes; track type) {
-                        <option [value]="type">{{ formatFeedbackType(type) }}</option>
-                      }
-                    </select>
-                    @if (getFieldError('feedbackType')) {
-                      <span class="field-error">{{ getFieldError('feedbackType') }}</span>
-                    }
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="content">Feedback Content *</label>
-                  <textarea
-                    id="content"
-                    formControlName="content"
-                    class="form-control"
-                    [class.error]="getFieldError('content')"
-                    rows="4"
-                    placeholder="Write your feedback here..."
-                  ></textarea>
-                  @if (getFieldError('content')) {
-                    <span class="field-error">{{ getFieldError('content') }}</span>
-                  }
-                  <div class="character-count">
-                    {{ feedbackForm.get('content')?.value?.length || 0 }}/1000 characters
-                  </div>
-                </div>
-
-                <div class="form-actions">
-                  <button type="submit" class="btn-primary" [disabled]="feedbackForm.invalid || isSubmitting">
-                    @if (isSubmitting) {
-                      <i class="fas fa-spinner fa-spin"></i>
-                      Submitting...
-                    } @else {
-                      <i class="fas fa-paper-plane"></i>
-                      Submit Feedback
-                    }
-                  </button>
-                </div>
-              </form>
-            </div>
-          }
         }
       </div>
     </div>

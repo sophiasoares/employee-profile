@@ -167,11 +167,6 @@
   color: var(--text-muted);
 }
 
-.sensitive-data {
-  color: var(--primary-color);
-  font-weight: var(--font-weight-medium);
-}
-
 .employee-actions {
   display: flex;
   gap: var(--spacing-sm);

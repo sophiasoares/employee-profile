@@ -5,11 +5,12 @@ import { RoleService } from '../../services/role.service';
 import { Employee, getFullName } from '../../models/employee.model';
 import { EmployeeEditDialogComponent } from '../employee-edit-dialog/employee-edit-dialog.component';
 import { EmployeeFeedbackDialogComponent } from '../employee-feedback-dialog/employee-feedback-dialog.component';
+import { EmployeeAbsenceDialogComponent } from '../employee-absence-dialog/employee-absence-dialog.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule, EmployeeEditDialogComponent, EmployeeFeedbackDialogComponent],
+  imports: [CommonModule, EmployeeEditDialogComponent, EmployeeFeedbackDialogComponent, EmployeeAbsenceDialogComponent],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
@@ -22,6 +23,10 @@ export class EmployeeListComponent implements OnInit {
   // for the feedback dialog
   isFeedbackDialogOpen = false;
   selectedEmployeeForFeedback: Employee | null = null;
+
+  // for the absence dialog
+  isAbsenceDialogOpen = false;
+  selectedEmployeeForAbsence: Employee | null = null;
 
   constructor(
     protected employeeDataService: EmployeeDataService,
@@ -89,5 +94,16 @@ export class EmployeeListComponent implements OnInit {
   closeFeedbackDialog(): void {
     this.isFeedbackDialogOpen = false;
     this.selectedEmployeeForFeedback = null;
+  }
+
+  // Absence dialog methods
+  openAbsenceDialog(employee: Employee): void {
+    this.selectedEmployeeForAbsence = employee;
+    this.isAbsenceDialogOpen = true;
+  }
+
+  closeAbsenceDialog(): void {
+    this.isAbsenceDialogOpen = false;
+    this.selectedEmployeeForAbsence = null;
   }
 }

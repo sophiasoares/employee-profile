@@ -1,0 +1,485 @@
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.dialog-content {
+  background: var(--background-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: var(--border-width) solid var(--border-color);
+  background: var(--secondary-background);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.dialog-header h2 i {
+  color: var(--primary-color);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: var(--font-size-lg);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: var(--hover-background);
+  color: var(--text-primary);
+}
+
+.dialog-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-lg);
+}
+
+/* Loading and error states */
+.loading-state,
+.error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.error-state {
+  color: var(--error-color);
+}
+
+.loading-state i {
+  font-size: var(--font-size-lg);
+}
+
+/* Absence sections */
+.absence-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.absence-section h3 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.request-absence-section {
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--spacing-lg);
+}
+
+/* Form styles */
+.absence-form {
+  background: var(--secondary-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  border: var(--border-width) solid var(--border-color);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.form-control {
+  padding: var(--spacing-sm);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  background: var(--background-color);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(54, 99, 153, 0.1);
+}
+
+.form-control:invalid {
+  border-color: var(--error-color);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.character-count {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: var(--spacing-xs);
+}
+
+.field-error {
+  color: var(--error-color);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-base);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  border: var(--border-width) solid var(--error-border);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Absence list styles */
+.absence-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.absence-item {
+  background: var(--background-color);
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-base);
+  transition: all 0.2s ease;
+}
+
+.absence-item:hover {
+  box-shadow: var(--shadow);
+}
+
+.absence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-base);
+}
+
+.absence-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.absence-type-badge {
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.absence-dates {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.duration {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.absence-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-xs);
+}
+
+.absence-created {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.absence-reason {
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: var(--border-width) solid var(--border-color);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-muted);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-base);
+  color: var(--text-muted);
+}
+
+.empty-state p {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-base);
+}
+
+.empty-state small {
+  font-size: var(--font-size-sm);
+}
+
+/* Absence type colors */
+.absence-vacation {
+  border-left: 4px solid #10B981;
+}
+
+.absence-vacation .absence-type-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.absence-sick {
+  border-left: 4px solid #EF4444;
+}
+
+.absence-sick .absence-type-badge {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+}
+
+.absence-personal {
+  border-left: 4px solid #8B5CF6;
+}
+
+.absence-personal .absence-type-badge {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8B5CF6;
+}
+
+.absence-maternity {
+  border-left: 4px solid #EC4899;
+}
+
+.absence-maternity .absence-type-badge {
+  background: rgba(236, 72, 153, 0.1);
+  color: #EC4899;
+}
+
+.absence-paternity {
+  border-left: 4px solid #3B82F6;
+}
+
+.absence-paternity .absence-type-badge {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3B82F6;
+}
+
+.absence-bereavement {
+  border-left: 4px solid #6B7280;
+}
+
+.absence-bereavement .absence-type-badge {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6B7280;
+}
+
+.absence-jury {
+  border-left: 4px solid #F59E0B;
+}
+
+.absence-jury .absence-type-badge {
+  background: rgba(245, 158, 11, 0.1);
+  color: #F59E0B;
+}
+
+.absence-military {
+  border-left: 4px solid #059669;
+}
+
+.absence-military .absence-type-badge {
+  background: rgba(5, 150, 105, 0.1);
+  color: #059669;
+}
+
+.absence-unpaid {
+  border-left: 4px solid #DC2626;
+}
+
+.absence-unpaid .absence-type-badge {
+  background: rgba(220, 38, 38, 0.1);
+  color: #DC2626;
+}
+
+.absence-sabbatical {
+  border-left: 4px solid #7C3AED;
+}
+
+.absence-sabbatical .absence-type-badge {
+  background: rgba(124, 58, 237, 0.1);
+  color: #7C3AED;
+}
+
+.absence-training {
+  border-left: 4px solid #0891B2;
+}
+
+.absence-training .absence-type-badge {
+  background: rgba(8, 145, 178, 0.1);
+  color: #0891B2;
+}
+
+.absence-conference {
+  border-left: 4px solid #DB2777;
+}
+
+.absence-conference .absence-type-badge {
+  background: rgba(219, 39, 119, 0.1);
+  color: #DB2777;
+}
+
+.absence-remote {
+  border-left: 4px solid #84CC16;
+}
+
+.absence-remote .absence-type-badge {
+  background: rgba(132, 204, 22, 0.1);
+  color: #84CC16;
+}
+
+.absence-other {
+  border-left: 4px solid #6B7280;
+}
+
+.absence-other .absence-type-badge {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6B7280;
+}
+
+.absence-default {
+  border-left: 4px solid var(--text-muted);
+}
+
+.absence-default .absence-type-badge {
+  background: rgba(156, 163, 175, 0.1);
+  color: var(--text-muted);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dialog-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .dialog-header {
+    padding: var(--spacing-base);
+  }
+  
+  .dialog-body {
+    padding: var(--spacing-base);
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .absence-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .absence-meta {
+    align-items: flex-start;
+  }
+}

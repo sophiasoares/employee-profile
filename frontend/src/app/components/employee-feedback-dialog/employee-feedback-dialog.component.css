@@ -156,11 +156,6 @@
   text-transform: uppercase;
 }
 
-.feedback-date {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-}
-
 .feedback-content {
   color: var(--text-primary);
   line-height: 1.6;
@@ -200,7 +195,6 @@
 }
 
 .write-feedback-section {
-  border-top: 2px solid var(--border-color);
   padding-top: var(--spacing-lg);
 }
 

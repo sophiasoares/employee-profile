@@ -1,0 +1,169 @@
+@if (isOpen) {
+  <div class="dialog-overlay" (click)="onClose()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <h2>
+          <i class="fas fa-calendar-times"></i>
+          Absence Requests - {{ employee ? getFullName(employee) : 'Employee' }}
+        </h2>
+        <button class="close-button" (click)="onClose()" aria-label="Close dialog">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        @if (isLoading) {
+          <div class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            Loading absence requests...
+          </div>
+        }
+
+        @if (errorMessage) {
+          <div class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ errorMessage }}
+          </div>
+        }
+
+        @if (!isLoading && !errorMessage) {
+          <!-- Request absence section (only for own profile) -->
+          @if (isViewingOwnProfile()) {
+            <div class="absence-section request-absence-section">
+              <h3>
+                <i class="fas fa-plus"></i>
+                Request New Absence
+              </h3>
+
+              <form [formGroup]="absenceForm" (ngSubmit)="onSubmitAbsenceRequest()" class="absence-form">
+                @if (submitErrorMessage) {
+                  <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ submitErrorMessage }}
+                  </div>
+                }
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="absenceType">Absence Type *</label>
+                    <select id="absenceType" formControlName="absenceType" class="form-control">
+                      @for (type of absenceTypes; track type) {
+                        <option [value]="type">{{ formatAbsenceType(type) }}</option>
+                      }
+                    </select>
+                    @if (getFieldError('absenceType')) {
+                      <div class="field-error">{{ getFieldError('absenceType') }}</div>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="startDate">Start Date *</label>
+                    <input 
+                      type="date" 
+                      id="startDate" 
+                      formControlName="startDate" 
+                      class="form-control"
+                      [min]="getTodayDateString()">
+                    @if (getFieldError('startDate')) {
+                      <div class="field-error">{{ getFieldError('startDate') }}</div>
+                    }
+                  </div>
+
+                  <div class="form-group">
+                    <label for="endDate">End Date *</label>
+                    <input 
+                      type="date" 
+                      id="endDate" 
+                      formControlName="endDate" 
+                      class="form-control"
+                      [min]="absenceForm.get('startDate')?.value || getTodayDateString()">
+                    @if (getFieldError('endDate')) {
+                      <div class="field-error">{{ getFieldError('endDate') }}</div>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="reason">Reason *</label>
+                  <textarea 
+                    id="reason" 
+                    formControlName="reason" 
+                    class="form-control" 
+                    rows="4" 
+                    placeholder="Please provide a detailed reason for your absence request..."></textarea>
+                  @if (getFieldError('reason')) {
+                    <div class="field-error">{{ getFieldError('reason') }}</div>
+                  }
+                  <div class="character-count">
+                    {{ absenceForm.get('reason')?.value?.length || 0 }}/1000 characters
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button 
+                    type="submit" 
+                    class="btn-primary" 
+                    [disabled]="!absenceForm.valid || isSubmitting">
+                    @if (isSubmitting) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Submitting...
+                    } @else {
+                      <i class="fas fa-paper-plane"></i>
+                      Submit Request
+                    }
+                  </button>
+                </div>
+              </form>
+            </div>
+          }
+
+          <!-- Existing absence requests section -->
+          <div class="absence-section existing-requests-section">
+            <h3>
+              <i class="fas fa-history"></i>
+              Absence History
+            </h3>
+
+            @if (absenceRequests.length === 0) {
+              <div class="empty-state">
+                <i class="fas fa-calendar-check"></i>
+                <p>No absence requests found</p>
+                <small>This employee hasn't submitted any absence requests yet.</small>
+              </div>
+            } @else {
+              <div class="absence-list">
+                @for (request of absenceRequests; track request.id) {
+                  <div class="absence-item" [class]="getAbsenceTypeClass(request.absenceType)">
+                    <div class="absence-header">
+                      <div class="absence-info">
+                        <div class="absence-type-badge" [class]="getAbsenceTypeClass(request.absenceType)">
+                          {{ formatAbsenceType(request.absenceType) }}
+                        </div>
+                        <div class="absence-dates">
+                          <i class="fas fa-calendar"></i>
+                          {{ formatDate(request.startDate) }} - {{ formatDate(request.endDate) }}
+                          <span class="duration">({{ calculateDuration(request.startDate, request.endDate) }} days)</span>
+                        </div>
+                      </div>
+                      <div class="absence-meta">
+                        <div class="absence-created">
+                          <i class="fas fa-clock"></i>
+                          {{ formatDate(request.createdAt) }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="absence-reason">
+                      {{ request.reason }}
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}

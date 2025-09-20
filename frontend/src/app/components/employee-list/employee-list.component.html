@@ -76,8 +76,12 @@
               </div>
             }
 
-            @if (roleService.permissions().canEditAllData || roleService.permissions().canViewAllFeedback) {
+            @if (roleService.permissions().canEditAllData || roleService.permissions().canViewAllFeedback || true) {
               <div class="employee-actions">
+                <button class="btn-secondary" (click)="openAbsenceDialog(employee)">
+                  <i class="fas fa-calendar-times"></i>
+                  Absence
+                </button>
                 @if (roleService.permissions().canViewAllFeedback) {
                   <button class="btn-secondary" (click)="openFeedbackDialog(employee)">
                     <i class="fas fa-comments"></i>
@@ -118,4 +122,10 @@
     [isOpen]="isFeedbackDialogOpen"
     (closeDialog)="closeFeedbackDialog()">
   </app-employee-feedback-dialog>
+
+  <app-employee-absence-dialog
+    [employee]="selectedEmployeeForAbsence"
+    [isOpen]="isAbsenceDialogOpen"
+    (closeDialog)="closeAbsenceDialog()">
+  </app-employee-absence-dialog>
 </div>
