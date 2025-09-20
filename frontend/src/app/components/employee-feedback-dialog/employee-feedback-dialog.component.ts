@@ -28,6 +28,9 @@ export class EmployeeFeedbackDialogComponent implements OnChanges {
   isSubmitting = false;
   submitErrorMessage = '';
   
+  // AI Enhancement
+  isEnhancing = false;
+
   feedbackTypes = Object.values(FeedbackType);
 
   constructor(
@@ -141,6 +144,32 @@ export class EmployeeFeedbackDialogComponent implements OnChanges {
     } else {
       this.submitErrorMessage = 'Please fill out the form correctly.';
     }
+  }
+
+  enhanceWithAI(): void {
+    const currentContent = this.feedbackForm.get('content')?.value;
+    
+    if (!currentContent || currentContent.trim().length === 0) {
+      return;
+    }
+
+    this.isEnhancing = true;
+    this.submitErrorMessage = '';
+
+    this.employeeService.enhanceFeedbackText(currentContent).subscribe({
+      next: (enhancedText) => {
+        // Update the form with the enhanced text
+        this.feedbackForm.patchValue({
+          content: enhancedText
+        });
+        this.isEnhancing = false;
+      },
+      error: (error) => {
+        console.error('AI enhancement failed:', error);
+        this.submitErrorMessage = 'Failed to enhance text with AI. Please try again.';
+        this.isEnhancing = false;
+      }
+    });
   }
 
   onClose(): void {

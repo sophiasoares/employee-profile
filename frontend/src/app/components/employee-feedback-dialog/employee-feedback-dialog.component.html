@@ -81,6 +81,21 @@
                 </div>
 
                 <div class="form-actions">
+                  <button 
+                    type="button" 
+                    class="btn-secondary ai-enhance-btn" 
+                    (click)="enhanceWithAI()"
+                    [disabled]="!feedbackForm.get('content')?.value || isEnhancing"
+                  >
+                    @if (isEnhancing) {
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Enhancing...
+                    } @else {
+                      <i class="fas fa-robot"></i>
+                      Enhance with AI
+                    }
+                  </button>
+                  
                   <button type="submit" class="btn-primary" [disabled]="feedbackForm.invalid || isSubmitting">
                     @if (isSubmitting) {
                       <i class="fas fa-spinner fa-spin"></i>

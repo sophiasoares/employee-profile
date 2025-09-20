@@ -77,4 +77,18 @@ public class FeedbackController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    // AI Enhancement endpoint
+    @PostMapping("/enhance")
+    public ResponseEntity<String> enhanceFeedbackText(@RequestBody String originalText) {
+        try {
+            String enhancedText = feedbackService.enhanceFeedbackWithAI(originalText);
+            return ResponseEntity.ok(enhancedText);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Failed to enhance text: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal server error occurred");
+        }
+    }
 }

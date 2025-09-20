@@ -59,7 +59,7 @@
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 		</dependency>
-		<!-- For loading environment variables from .env file (optional but recommended) -->
+		<!-- For loading environment variables from .env file -->
 		<dependency>
 			<groupId>me.paulschwarz</groupId>
 			<artifactId>spring-dotenv</artifactId>

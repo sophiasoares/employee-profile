@@ -43,6 +43,13 @@ export class EmployeeService {
     return this.http.post<Feedback>(`${this.apiUrl}/feedback`, feedback);
   }
 
+  enhanceFeedbackText(text: string): Observable<string> {
+    return this.http.post(`${this.apiUrl}/feedback/enhance`, text, { 
+      responseType: 'text',
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   // Absence request endpoints
   getAllAbsenceRequests(): Observable<AbsenceRequest[]> {
     return this.http.get<AbsenceRequest[]>(`${this.apiUrl}/absence-requests`);
