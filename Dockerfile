@@ -1,5 +1,5 @@
 # Multi-stage build
-FROM node:18-alpine AS frontend-build
+FROM node:20-alpine AS frontend-build
 
 # Build Angular frontend
 WORKDIR /app/frontend
