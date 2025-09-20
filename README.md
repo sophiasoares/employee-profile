@@ -11,7 +11,7 @@ Visit the live application: [https://employee-profile-system.onrender.com](https
 ## 🏗️ Tech Stack
 
 - **Frontend**: Angular 20+ with TypeScript
-- **Backend**: Spring Boot 3.5+ with Java 17
+- **Backend**: Spring Boot 3.5+ with Java 21
 - **Database**: Supabase (PostgreSQL)
 - **AI Enhancement**: OpenRouter API with Mistral 7B
 - **Deployment**: Docker multi-stage build
@@ -85,7 +85,7 @@ The goal was to create a system that's easy to understand, extend, and maintain 
 I hosted the application on Render. You can find it here: [https://employee-profile-system.onrender.com](https://employee-profile-system.onrender.com), but if you want to run it locally, follow the instructions below.
 
 ### Prerequisites
-- **Java 17** or higher
+- **Java 21** or higher
 - **Node.js 18+** and npm
 - **Maven 3.6+**
 - **Supabase account** (for database)
