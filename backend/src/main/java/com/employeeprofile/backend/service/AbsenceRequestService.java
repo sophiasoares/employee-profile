@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,35 +20,8 @@ public class AbsenceRequestService {
         return absenceRequestRepository.findAll();
     }
 
-    public Optional<AbsenceRequest> getAbsenceRequestById(Long id) {
-        return absenceRequestRepository.findById(id);
-    }
-
-    public AbsenceRequest saveAbsenceRequest(AbsenceRequest absenceRequest) {
-        return absenceRequestRepository.save(absenceRequest);
-    }
-
     public AbsenceRequest createAbsenceRequest(AbsenceRequest absenceRequest) {
         return absenceRequestRepository.save(absenceRequest);
-    }
-
-    public AbsenceRequest updateAbsenceRequest(Long id, AbsenceRequest requestDetails) {
-        AbsenceRequest request = absenceRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Absence request not found with id: " + id));
-
-        request.setAbsenceType(requestDetails.getAbsenceType());
-        request.setStartDate(requestDetails.getStartDate());
-        request.setEndDate(requestDetails.getEndDate());
-        request.setReason(requestDetails.getReason());
-
-        return absenceRequestRepository.save(request);
-    }
-
-    public void deleteAbsenceRequest(Long id) {
-        AbsenceRequest request = absenceRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Absence request not found with id: " + id));
-        
-        absenceRequestRepository.delete(request);
     }
 
     public List<AbsenceRequest> getAbsenceRequestsForEmployee(Employee employee) {

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,32 +21,8 @@ public class FeedbackService {
         return feedbackRepository.findAll();
     }
 
-    public Optional<Feedback> getFeedbackById(Long id) {
-        return feedbackRepository.findById(id);
-    }
-
-    public Feedback saveFeedback(Feedback feedback) {
-        return feedbackRepository.save(feedback);
-    }
-
     public Feedback createFeedback(Feedback feedback) {
         return feedbackRepository.save(feedback);
-    }
-
-    public Feedback updateFeedback(Long id, Feedback feedbackDetails) {
-        Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Feedback not found with id: " + id));
-
-        feedback.setContent(feedbackDetails.getContent());
-        feedback.setFeedbackType(feedbackDetails.getFeedbackType());
-
-        return feedbackRepository.save(feedback);
-    }
-
-    public void deleteFeedback(Long id) {
-        Feedback feedback = feedbackRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Feedback not found with id: " + id));
-        feedbackRepository.delete(feedback);
     }
 
     // Employee-specific operations
@@ -67,14 +42,5 @@ public class FeedbackService {
         feedback.setAiEnhancedContent(aiEnhancedContent);
         feedback.setIsAiEnhanced(true);
         feedbackRepository.save(feedback);
-    }
-
-    // Statistics
-    public long getFeedbackCountForEmployee(Employee employee) {
-        return feedbackRepository.countByEmployee(employee);
-    }
-
-    public long getFeedbackCountByGiver(Employee feedbackGiver) {
-        return feedbackRepository.countByFeedbackGiver(feedbackGiver);
     }
 }

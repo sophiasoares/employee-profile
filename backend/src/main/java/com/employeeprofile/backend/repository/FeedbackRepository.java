@@ -12,6 +12,4 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     
     List<Feedback> findByEmployeeOrderByIdDesc(Employee employee);
     List<Feedback> findByFeedbackGiverOrderByIdDesc(Employee feedbackGiver);
-    long countByEmployee(Employee employee);
-    long countByFeedbackGiver(Employee feedbackGiver);
 }

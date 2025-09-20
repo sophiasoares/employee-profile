@@ -24,10 +24,6 @@ public class EmployeeService {
         return employeeRepository.findById(id);
     }
 
-    public Employee createEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
-
     public Employee updateEmployee(Long id, Employee employeeDetails) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
@@ -46,19 +42,5 @@ public class EmployeeService {
         employee.setProfilePictureUrl(employeeDetails.getProfilePictureUrl());
 
         return employeeRepository.save(employee);
-    }
-
-    public void deleteEmployee(Long id) {
-        Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
-        employeeRepository.delete(employee);
-    }
-
-    public long getTotalEmployees() {
-        return employeeRepository.count();
-    }
-
-    public List<Employee> searchByName(String name) {
-        return employeeRepository.findByNameContaining(name);
     }
 }

@@ -77,19 +77,6 @@ export class EmployeeProfileComponent implements OnInit {
     }).format(salary);
   }
 
-  formatRole(role: string): string {
-    return role.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
-  }
-
-  getRoleClass(role: string): string {
-    switch (role.toLowerCase()) {
-      case 'manager': return 'role-manager';
-      case 'co_worker': return 'role-coworker';
-      case 'employee': return 'role-employee';
-      default: return 'role-default';
-    }
-  }
-
   // Dialog methods
   openFeedbackDialog(): void {
     this.isFeedbackDialogOpen = true;

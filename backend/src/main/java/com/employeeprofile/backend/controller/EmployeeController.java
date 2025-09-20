@@ -42,19 +42,6 @@ public class EmployeeController {
         }
     }
 
-    // Create new employee
-    @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
-        try {
-            Employee createdEmployee = employeeService.createEmployee(employee);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployee);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
     // Update employee
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, 
@@ -64,30 +51,6 @@ public class EmployeeController {
             return ResponseEntity.ok(updatedEmployee);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Delete employee 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        try {
-            employeeService.deleteEmployee(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Search employees by name
-    @GetMapping("/search/name")
-    public ResponseEntity<List<Employee>> searchByName(@RequestParam String name) {
-        try {
-            List<Employee> employees = employeeService.searchByName(name);
-            return ResponseEntity.ok(employees);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

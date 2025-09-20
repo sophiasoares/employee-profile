@@ -164,7 +164,6 @@
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }

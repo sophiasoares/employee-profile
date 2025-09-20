@@ -18,20 +18,8 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.apiUrl}/employees`);
   }
 
-  getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiUrl}/employees/${id}`);
-  }
-
   updateEmployee(id: number, employee: Partial<Employee>): Observable<Employee> {
     return this.http.put<Employee>(`${this.apiUrl}/employees/${id}`, employee);
-  }
-
-  createEmployee(employee: Omit<Employee, 'id'>): Observable<Employee> {
-    return this.http.post<Employee>(`${this.apiUrl}/employees`, employee);
-  }
-
-  deleteEmployee(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/employees/${id}`);
   }
 
   // Feedback endpoints

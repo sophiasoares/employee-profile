@@ -35,51 +35,12 @@ public class AbsenceRequestController {
         }
     }
 
-    // Get absence request by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<AbsenceRequest> getAbsenceRequestById(@PathVariable Long id) {
-        try {
-            Optional<AbsenceRequest> request = absenceRequestService.getAbsenceRequestById(id);
-            return request.map(ResponseEntity::ok)
-                         .orElse(ResponseEntity.notFound().build());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
     // Create new absence request
     @PostMapping
     public ResponseEntity<AbsenceRequest> createAbsenceRequest(@Valid @RequestBody AbsenceRequest request) {
         try {
             AbsenceRequest createdRequest = absenceRequestService.createAbsenceRequest(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Update absence request
-    @PutMapping("/{id}")
-    public ResponseEntity<AbsenceRequest> updateAbsenceRequest(@PathVariable Long id, 
-                                                              @Valid @RequestBody AbsenceRequest request) {
-        try {
-            AbsenceRequest updatedRequest = absenceRequestService.updateAbsenceRequest(id, request);
-            return ResponseEntity.ok(updatedRequest);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Delete absence request
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAbsenceRequest(@PathVariable Long id) {
-        try {
-            absenceRequestService.deleteAbsenceRequest(id);
-            return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -95,7 +56,7 @@ public class AbsenceRequestController {
             if (employee.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }
-            List<AbsenceRequest> requests = absenceRequestService.getAbsenceRequestsForEmployee(employee.get());
+            List<AbsenceRequest> requests = absenceRequestService.getAbsenceRequestsForEmployee(employee.orElseThrow());
             return ResponseEntity.ok(requests);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
