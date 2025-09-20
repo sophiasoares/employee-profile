@@ -1,0 +1,149 @@
+<div class="profile-container">
+  @if (employeeDataService.isLoading()) {
+    <div class="loading-state">
+      <i class="fas fa-spinner fa-spin"></i>
+      Loading your profile...
+    </div>
+  }
+
+  @if (employeeDataService.errorMessage()) {
+    <div class="error-state">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ employeeDataService.errorMessage() }}
+    </div>
+  }
+
+  @if (!employeeDataService.isLoading() && !employeeDataService.errorMessage() && currentEmployee) {
+    <div class="profile-header">
+      <div class="profile-avatar">
+        @if (currentEmployee.profilePictureUrl) {
+          <img [src]="currentEmployee.profilePictureUrl" [alt]="getFullName(currentEmployee)" />
+        } @else {
+          <i class="fas fa-user"></i>
+        }
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ getFullName(currentEmployee) }}</h1>
+        <p class="profile-position">{{ currentEmployee.position }}</p>
+        <div class="profile-badges">
+          <span class="employment-type-badge" [class]="getTypeClass(currentEmployee.employmentType)">
+            {{ formatEmploymentType(currentEmployee.employmentType) }}
+          </span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-primary" (click)="openFeedbackDialog()">
+          <i class="fas fa-comments"></i>
+          My Feedback
+        </button>
+        <button class="btn-secondary" (click)="openAbsenceDialog()">
+          <i class="fas fa-calendar-times"></i>
+          Absence Requests
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-content">
+      <!-- Personal info section -->
+      <div class="info-section">
+        <h2>
+          <i class="fas fa-user"></i>
+          Personal Information
+        </h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Employee ID</label>
+            <span>{{ currentEmployee.employeeId }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email</label>
+            <span>{{ currentEmployee.email }}</span>
+          </div>
+          <div class="info-item">
+            <label>Phone Number</label>
+            <span>{{ currentEmployee.phoneNumber || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Address</label>
+            <span>{{ currentEmployee.address || 'Not provided' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employment Information Section -->
+      <div class="info-section">
+        <h2>
+          <i class="fas fa-briefcase"></i>
+          Employment Information
+        </h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Department</label>
+            <span>{{ currentEmployee.department }}</span>
+          </div>
+          <div class="info-item">
+            <label>Hire Date</label>
+            <span>{{ formatDate(currentEmployee.hireDate) }}</span>
+          </div>
+          <div class="info-item">
+            <label>Employment Type</label>
+            <span class="employment-type-badge" [class]="getTypeClass(currentEmployee.employmentType)">
+              {{ formatEmploymentType(currentEmployee.employmentType) }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Salary</label>
+            <span class="salary-amount">{{ formatSalary(currentEmployee.salary) }} EUR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Information Section -->
+      <div class="info-section">
+        <h2>
+          <i class="fas fa-id-card"></i>
+          Professional Information
+        </h2>
+        
+        @if (currentEmployee.bio) {
+          <div class="bio-section">
+            <h3>Biography</h3>
+            <p class="bio-text">{{ currentEmployee.bio }}</p>
+          </div>
+        }
+
+        @if (currentEmployee.skills) {
+          <div class="skills-section">
+            <h3>Skills & Expertise</h3>
+            <div class="skills-list">
+              @for (skill of currentEmployee.skills.split(','); track skill) {
+                <span class="skill-tag">{{ skill.trim() }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (!employeeDataService.isLoading() && !employeeDataService.errorMessage() && !currentEmployee) {
+    <div class="error-state">
+      <i class="fas fa-user-slash"></i>
+      <h3>Profile Not Found</h3>
+      <p>Unable to load your employee profile. Please contact your administrator.</p>
+    </div>
+  }
+
+  <!-- Dialogs -->
+  <app-employee-feedback-dialog
+    [employee]="currentEmployee"
+    [isOpen]="isFeedbackDialogOpen"
+    (closeDialog)="closeFeedbackDialog()">
+  </app-employee-feedback-dialog>
+
+  <app-employee-absence-dialog
+    [employee]="currentEmployee"
+    [isOpen]="isAbsenceDialogOpen"
+    (closeDialog)="closeAbsenceDialog()">
+  </app-employee-absence-dialog>
+</div>

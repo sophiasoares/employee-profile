@@ -38,7 +38,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Hauptstraße 123, 10115 Berlin, Germany", "https://i.pravatar.cc/150?img=1", EmployeeRole.MANAGER);
 
         Employee hrManager = createEmployee("EMP002", "Michael", "Chen", "michael.chen@company.com", 
-                "HR Manager", "Human Resources", new BigDecimal("95000"),
+                "Temporary HR Coordinator", "Human Resources", new BigDecimal("55000"),
                 "Friedrichstraße 45, 10117 Berlin, Germany", "https://i.pravatar.cc/150?img=2", EmployeeRole.MANAGER);
 
         Employee devManager = createEmployee("EMP003", "Emily", "Rodriguez", "emily.rodriguez@company.com", 
@@ -86,15 +86,15 @@ public class DataInitializer implements CommandLineRunner {
         employeeRepository.save(strategyConsultant);
 
         // Create feedback
-        createFeedback(developer1, developer2, 
+        createFeedback(developer2, developer1, 
                 "Lisa has been excellent to work with on the frontend components. Her attention to detail is outstanding.",
                 FeedbackType.POSITIVE);
 
-        createFeedback(developer2, devManager, 
+        createFeedback(devManager, developer2, 
                 "Emily provides clear direction and is always available for technical guidance.",
                 FeedbackType.MANAGER_FEEDBACK);
 
-        createFeedback(devManager, developer1, 
+        createFeedback(developer1, devManager, 
                 "James consistently delivers high-quality code and mentors junior developers well.",
                 FeedbackType.PERFORMANCE_REVIEW);
 
@@ -102,13 +102,17 @@ public class DataInitializer implements CommandLineRunner {
                 "Anna has created an excellent design system that improved our product consistency.",
                 FeedbackType.POSITIVE);
 
-        createFeedback(intern, developer1, 
+        createFeedback(developer1, intern, 
                 "James has been an amazing mentor, helping me understand complex concepts.",
                 FeedbackType.POSITIVE);
 
-        createFeedback(securityConsultant, devManager, 
+        createFeedback(devManager, securityConsultant, 
                 "Marcus has significantly improved our security posture with comprehensive audits.",
                 FeedbackType.PERFORMANCE_REVIEW);
+
+        createFeedback(developer1, hrManager, 
+                "James is a great team player and always willing to help with tasks.",
+                FeedbackType.POSITIVE);
 
         // Create absence requests
         createAbsenceRequest(developer1, AbsenceType.VACATION, 
@@ -131,8 +135,12 @@ public class DataInitializer implements CommandLineRunner {
                 LocalDate.now().plusDays(15), LocalDate.now().plusDays(15),
                 "Medical appointment");
 
+        createAbsenceRequest(hrManager, AbsenceType.VACATION, 
+                LocalDate.now().plusDays(20), LocalDate.now().plusDays(22),
+                "Short trip to Paris");
+
         System.out.println("✅ Sample data initialized successfully!");
-        System.out.println("📊 Created 10 employees, 6 feedback entries, and 5 absence requests");
+        System.out.println("📊 Created 10 employees, 7 feedback entries, and 6 absence requests");
         System.out.println("🌐 API available at: http://localhost:8080/api");
     }
 
@@ -156,6 +164,8 @@ public class DataInitializer implements CommandLineRunner {
             employee.setEmploymentType(EmploymentType.CONTRACT);
         } else if (position.contains("Part-time")) {
             employee.setEmploymentType(EmploymentType.PART_TIME);
+        } else if (position.contains("Temporary")) {
+            employee.setEmploymentType(EmploymentType.TEMPORARY);
         } else {
             employee.setEmploymentType(EmploymentType.FULL_TIME);
         }

@@ -3,6 +3,11 @@
   
   <main class="main-content">
     <app-role-description></app-role-description>
-    <app-employee-list></app-employee-list>
+    
+    @if (isEmployee()) {
+      <app-employee-profile></app-employee-profile>
+    } @else {
+      <app-employee-list></app-employee-list>
+    }
   </main>
 </div>
