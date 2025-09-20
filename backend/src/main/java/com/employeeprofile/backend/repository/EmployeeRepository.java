@@ -12,6 +12,9 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
+    // Find all employees ordered by ID to maintain consistent order
+    List<Employee> findAllByOrderByIdAsc();
+    
     Optional<Employee> findByEmployeeId(String employeeId);
     
     // Search by name (using firstName and lastName)

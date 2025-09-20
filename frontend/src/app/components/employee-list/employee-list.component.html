@@ -78,7 +78,7 @@
 
             @if (roleService.permissions().canEditAllData) {
               <div class="employee-actions">
-                <button class="btn-secondary">
+                <button class="btn-secondary" (click)="openEditDialog(employee)">
                   <i class="fas fa-edit"></i>
                   Edit
                 </button>
@@ -97,4 +97,11 @@
       </div>
     }
   }
+
+  <app-employee-edit-dialog
+    [employee]="selectedEmployee"
+    [isOpen]="isEditDialogOpen"
+    (closeDialog)="closeEditDialog()"
+    (employeeUpdated)="onEmployeeUpdated($event)">
+  </app-employee-edit-dialog>
 </div>

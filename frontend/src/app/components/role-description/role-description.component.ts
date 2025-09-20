@@ -16,7 +16,7 @@ export class RoleDescriptionComponent {
   constructor(protected roleService: RoleService) {}
 
   formatRole(role: string): string {
-    return role.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+    return role.replace('_', '-').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
   }
 
   getRoleClass(): string {
@@ -34,23 +34,5 @@ export class RoleDescriptionComponent {
       default:
         return '';
     }
-  }
-
-  getPermissionsList(): string[] {
-    const permissions = this.roleService.permissions();
-    const list: string[] = [];
-    
-    if (permissions.canViewSensitiveData) list.push('View sensitive data (salary, address, etc.)');
-    if (permissions.canEditAllData) list.push('Edit all employee data');
-    if (permissions.canApproveAbsences) list.push('Approve absence requests');
-    if (permissions.canViewAllFeedback) list.push('View all team feedback');
-    if (permissions.canGiveFeedback) list.push('Give feedback to colleagues');
-    if (permissions.canViewFeedback) list.push('View feedback given to you');
-    if (permissions.canViewAllEmployees) list.push('View all employee profiles');
-    
-    // Everyone can request absences, so we always show this
-    list.push('Request time off');
-    
-    return list;
   }
 }

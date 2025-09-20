@@ -1,14 +1,14 @@
 export interface Employee {
   id: number;
   
-  // Personal Information
+  // Personal info
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
   address?: string;
   
-  // Employment Information
+  // Employment info
   employeeId: string;
   position: string;
   department: string;
@@ -16,7 +16,7 @@ export interface Employee {
   employmentType: EmploymentType;
   salary?: number;
   
-  // Profile Information
+  // Profile info
   bio?: string;
   skills?: string;
   profilePictureUrl?: string;

@@ -20,16 +20,4 @@
   </div>
   
   <p class="role-description">{{ getRoleDescription() }}</p>
-  
-  <div class="permissions-section">
-    <h3>Your Permissions</h3>
-    <ul class="permissions-list">
-      @for (permission of getPermissionsList(); track permission) {
-        <li class="permission-item">
-          <i class="fas fa-check-circle"></i>
-          {{ permission }}
-        </li>
-      }
-    </ul>
-  </div>
 </div>

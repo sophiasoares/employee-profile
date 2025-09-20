@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 import { EmployeeDataService } from '../../services/employee-data.service';
 import { RoleService } from '../../services/role.service';
 import { Employee, getFullName } from '../../models/employee.model';
+import { EmployeeEditDialogComponent } from '../employee-edit-dialog/employee-edit-dialog.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, EmployeeEditDialogComponent],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
   
+  // for the edit dialog
+  isEditDialogOpen = false;
+  selectedEmployee: Employee | null = null;
+
   constructor(
     protected employeeDataService: EmployeeDataService,
     protected roleService: RoleService
@@ -50,8 +55,22 @@ export class EmployeeListComponent implements OnInit {
   formatSalary(salary: number | undefined): string {
     if (!salary) return 'N/A';
     return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR'
+      style: 'decimal'
     }).format(salary);
+  }
+
+  openEditDialog(employee: Employee): void {
+    this.selectedEmployee = employee;
+    this.isEditDialogOpen = true;
+  }
+
+  closeEditDialog(): void {
+    this.isEditDialogOpen = false;
+    this.selectedEmployee = null;
+  }
+
+  onEmployeeUpdated(updatedEmployee: Employee): void {
+    // for the future: create a snackbar
+    console.log('Employee updated successfully:', updatedEmployee);
   }
 }
