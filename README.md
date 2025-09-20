@@ -19,13 +19,11 @@ The requirements were short and didn't provide many details, so I had to make so
 - **Co-worker**: Can view all employee profiles (only non-sensitive data), see/create absences, view/give feedback to colleagues
 - **Employee**: Can only view their own profile data, see their absences, see feedback given to them, request absences
 - **Search Functionality**: Real-time search by name (only for managers and co-workers)
+- **Feedback Functionality**: feedback is given to employees by managers and co-workers
+- **Absence Functionality**: absences are requested by everyone. Managers and co-workers can see all requests and employees can see their own requests.
 
 ### AI-Powered Feedback Enhancement
 - **Smart Enhancement**: i used OpenRouter API with Mistral 7B model to improve feedback quality and convert casual feedback into professional, constructive language
-
-### Absence Management
-- **Simple Workflow**: Everyone can request absences
-- **Date Validation**: Prevents invalid date ranges and past date requests
 
 ## 🗄️ Data Models
 
@@ -48,9 +46,6 @@ Represents a time-off request with an absence type, reason and date range.
 
 ## 🏛️ Architecture Decisions
 
-I designed this system with simplicity and maintainability in mind. Here's how I approached the key architectural choices:
-
-### Overall Architecture
 - I chose Angular, Spring Boot and Supabase as tech stack because I am familiar with them and they are easy to use.
 - In the backend I implemented clean separation with controllers, services, and repositories (the flow goes: controller -> service -> repository -> database)
 - Used JPA/Hibernate to help me create the database schema and object-relational mapping
@@ -59,21 +54,22 @@ I designed this system with simplicity and maintainability in mind. Here's how I
 - I chose not to use a package for state managament in the frontend (like NgRx) because i wanted to keep it simple and using signals was enough for this application
 - Used services in the frotnend to handle business logic and data access.
 - The project has MVVM architecture with components, services, and models. Angular works very well with this architecture, so i thought it was a good and straighforward choice for the project.
-- i used AI (Windsurf) to help me with some refactoring, to populate the database, provide me with ideas for models properties (example: role, department, address, etc. for the Employee model)
+- I used AI (Windsurf) to help me with some refactoring, to populate the database, provide me with ideas for models properties (example: role, department, address, etc. for the Employee model)
 - i also used AI to help me connect OpenRouter API with the application so that i could have AI-powered feedback enhancement
 
-### Future enhancements
+## Future enhancements
 There are many things I would develop to complement this project. Some of them are:
-- add tests for each component, endpoints, services, methods
+- Add tests for each component, endpoints, services, methods
 - Implement create and delete operations for employees
 - Implement update and delete for feeebacm and absence requests
 - implement approval/rejection for absence requests
 - Increase search capabilities (search by phone number, address, etc.)
 - add filters (filter by role, department, etc.)
-- i hardcoded 3 users (one manager, one co-worker, one employee) for the role switcher, so i would do it properly and add authentication, login, etc.
+- I hardcoded 3 users (one manager, one co-worker, one employee) for the role switcher, so i would do it properly and add authentication, login, etc.
 - I would add more fields to the models, like emergency contacts, updatedAt, etc.
 - improve and add more validation rules
 - i would use a state management package (like NgRx) to manage the state of the frontend
+- probably improve documentation
 
 The goal was to create a system that's easy to understand, extend, and maintain while providing real business value through role-based access control and AI-enhanced feedback.
 
