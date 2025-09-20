@@ -9,7 +9,7 @@ import { AbsenceRequest } from '../models/absence-request.model';
   providedIn: 'root'
 })
 export class EmployeeService {
-  private readonly apiUrl = 'http://localhost:8080/api';
+  private readonly apiUrl = window.location.origin + '/api';
 
   constructor(private http: HttpClient) {}
 

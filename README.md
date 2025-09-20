@@ -2,6 +2,12 @@
 
 A single-page HR application supporting role-based data access for employee profiles, feedback collection, and absence requests with AI-powered feedback enhancement.
 
+## 🌐 Live Demo
+
+Visit the live application: [https://employee-profile-system.onrender.com](https://employee-profile-system.onrender.com)
+
+**Note**: The free tier may take 30-60 seconds to wake up if it hasn't been used recently.
+
 ## 🏗️ Tech Stack
 
 - **Frontend**: Angular 20+ with TypeScript
@@ -75,6 +81,8 @@ The goal was to create a system that's easy to understand, extend, and maintain 
 
 ## 🚀 How to Run
 
+I hosted the application on Render. You can find it here: [https://employee-profile-system.onrender.com](https://employee-profile-system.onrender.com), but if you want to run it locally, follow the instructions below.
+
 ### Prerequisites
 - **Java 17** or higher
 - **Node.js 18+** and npm
@@ -109,7 +117,10 @@ Backend starts on `http://localhost:8080` with automatic sample data initializat
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
+1. Update line 12 in `frontend/src/app/services/employee.service.ts` to use local API URL. Change it to:
+  ```private readonly apiUrl = 'http://localhost:8080/api';``` 
+
+2. Navigate to the frontend directory:
    ```bash
    cd frontend
    ```
