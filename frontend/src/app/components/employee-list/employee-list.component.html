@@ -9,6 +9,24 @@
     </div>
   </div>
 
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input 
+        type="text" 
+        class="search-input"
+        placeholder="Search employees by name..."
+        [value]="searchTerm"
+        (input)="onSearchChange($event)"
+      />
+      @if (searchTerm) {
+        <button class="clear-search-btn" (click)="clearSearch()" type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      }
+    </div>
+  </div>
+
   @if (employeeDataService.isLoading()) {
     <div class="loading-state">
       <i class="fas fa-spinner fa-spin"></i>

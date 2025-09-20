@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeeDataService } from '../../services/employee-data.service';
 import { RoleService } from '../../services/role.service';
-import { Employee, getFullName } from '../../models/employee.model';
+import { Employee, getFullName, EmploymentType } from '../../models/employee.model';
 import { EmployeeEditDialogComponent } from '../employee-edit-dialog/employee-edit-dialog.component';
 import { EmployeeFeedbackDialogComponent } from '../employee-feedback-dialog/employee-feedback-dialog.component';
 import { EmployeeAbsenceDialogComponent } from '../employee-absence-dialog/employee-absence-dialog.component';
@@ -16,6 +16,9 @@ import { EmployeeAbsenceDialogComponent } from '../employee-absence-dialog/emplo
 })
 export class EmployeeListComponent implements OnInit {
   
+  // Search functionality
+  searchTerm = '';
+
   // for the edit dialog
   isEditDialogOpen = false;
   selectedEmployee: Employee | null = null;
@@ -42,24 +45,24 @@ export class EmployeeListComponent implements OnInit {
     return getFullName(employee);
   }
 
-  formatDate(dateString: string): string {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
+  getTypeClass(type: EmploymentType): string {
+    switch (type) {
+      case EmploymentType.FULL_TIME: return 'type-full-time';
+      case EmploymentType.PART_TIME: return 'type-part-time';
+      case EmploymentType.CONTRACT: return 'type-contract';
+      case EmploymentType.INTERN: return 'type-intern';
+      case EmploymentType.TEMPORARY: return 'type-temporary';
+      default: return 'type-default';
+    }
   }
 
-  formatEmploymentType(type: string): string {
+  formatEmploymentType(type: EmploymentType): string {
     return type.replace('_', ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
   }
 
-  getTypeClass(type: string): string {
-    switch (type) {
-      case 'FULL_TIME': return 'type-full-time';
-      case 'PART_TIME': return 'type-part-time';
-      case 'CONTRACT': return 'type-contract';
-      case 'INTERN': return 'type-intern';
-      case 'TEMPORARY': return 'type-temporary';
-      default: return 'type-default';
-    }
+  formatDate(dateString: string): string {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
   }
 
   formatSalary(salary: number | undefined): string {
@@ -105,5 +108,17 @@ export class EmployeeListComponent implements OnInit {
   closeAbsenceDialog(): void {
     this.isAbsenceDialogOpen = false;
     this.selectedEmployeeForAbsence = null;
+  }
+
+  // Search methods
+  onSearchChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.searchTerm = target.value;
+    this.employeeDataService.searchEmployees(this.searchTerm);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.employeeDataService.searchEmployees('');
   }
 }

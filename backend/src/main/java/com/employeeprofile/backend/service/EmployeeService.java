@@ -43,4 +43,8 @@ public class EmployeeService {
 
         return employeeRepository.save(employee);
     }
+
+    public List<Employee> searchByName(String name) {
+        return employeeRepository.findByNameContaining(name);
+    }
 }

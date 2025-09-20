@@ -15,22 +15,38 @@ export class EmployeeDataService {
   private absenceRequests = signal<AbsenceRequest[]>([]);
   private loading = signal<boolean>(false);
   private error = signal<string | null>(null);
+  private searchTerm = signal<string>('');
 
-  // filtered data based on current user permissions
+  // filtered data based on current user permissions and search
   filteredEmployees = computed(() => {
     const allEmployees = this.employees();
     const currentUser = this.roleService.user();
     const permissions = this.roleService.permissions();
+    const search = this.searchTerm().toLowerCase().trim();
+
+    let employeesToShow: Employee[];
 
     if (permissions.canViewAllEmployees) {
       // Manager and co-worker can see all employees
-      return allEmployees.map(emp => this.filterEmployeeData(emp));
+      employeesToShow = allEmployees.map(emp => this.filterEmployeeData(emp));
     } else {
       // Employee can only see their own data
-      return allEmployees
+      employeesToShow = allEmployees
         .filter(emp => emp.id === currentUser.id)
         .map(emp => this.filterEmployeeData(emp));
     }
+
+    // Apply search filter if search term exists
+    if (search) {
+      employeesToShow = employeesToShow.filter(emp => {
+        const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+        return fullName.includes(search) || 
+               emp.firstName.toLowerCase().includes(search) || 
+               emp.lastName.toLowerCase().includes(search);
+      });
+    }
+
+    return employeesToShow;
   });
 
   filteredFeedback = computed(() => {
@@ -175,5 +191,9 @@ export class EmployeeDataService {
         return newRequest;
       })
     );
+  }
+
+  searchEmployees(searchTerm: string): void {
+    this.searchTerm.set(searchTerm);
   }
 }

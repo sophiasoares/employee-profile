@@ -22,6 +22,10 @@ export class EmployeeService {
     return this.http.put<Employee>(`${this.apiUrl}/employees/${id}`, employee);
   }
 
+  searchEmployeesByName(name: string): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.apiUrl}/employees/search?name=${encodeURIComponent(name)}`);
+  }
+
   // Feedback endpoints
   getAllFeedback(): Observable<Feedback[]> {
     return this.http.get<Feedback[]>(`${this.apiUrl}/feedback`);
