@@ -1,95 +1,90 @@
-# Employee Profile Management System
+# Employee Management System
 
-A single-page HR application supporting role-based data access for employee profiles, feedback collection, and absence requests.
+A single-page HR application supporting role-based data access for employee profiles, feedback collection, and absence requests with AI-powered feedback enhancement.
 
-## 🏗️ Architecture
-
-This project follows a modern full-stack architecture:
+## 🏗️ Tech Stack
 
 - **Frontend**: Angular 20+ with TypeScript
 - **Backend**: Spring Boot 3.5+ with Java 17
 - **Database**: Supabase (PostgreSQL)
+- **AI Enhancement**: OpenRouter API with Mistral 7B
 - **Build Tools**: Maven (Backend), Angular CLI (Frontend)
 
-## 📁 Project Structure
+## 🎯 Key Features
 
-```
-employee-profile/
-├── backend/                    # Spring Boot REST API
-│   ├── src/main/java/com/employeeprofile/backend/
-│   │   ├── entity/            # JPA Entities
-│   │   │   ├── Employee.java
-│   │   │   ├── Feedback.java
-│   │   │   ├── AbsenceRequest.java
-│   │   │   ├── EmploymentType.java
-│   │   │   ├── EmploymentStatus.java
-│   │   │   ├── AbsenceType.java
-│   │   │   ├── AbsenceStatus.java
-│   │   │   ├── HalfDayPeriod.java
-│   │   │   ├── FeedbackType.java
-│   │   │   └── FeedbackStatus.java
-│   │   ├── repository/        # Spring Data JPA Repositories
-│   │   │   ├── EmployeeRepository.java
-│   │   │   ├── FeedbackRepository.java
-│   │   │   └── AbsenceRequestRepository.java
-│   │   ├── service/           # Business Logic Layer
-│   │   │   ├── EmployeeService.java
-│   │   │   ├── FeedbackService.java
-│   │   │   └── AbsenceRequestService.java
-│   │   ├── controller/        # REST Controllers
-│   │   │   ├── EmployeeController.java
-│   │   │   ├── FeedbackController.java
-│   │   │   └── AbsenceRequestController.java
-│   │   └── config/           # Configuration Classes
-│   │       ├── CorsConfig.java
-│   │       └── DataInitializer.java
-│   ├── pom.xml
-│   └── .env                  # Database configuration (not committed)
-├── frontend/                 # Angular application
-│   ├── src/
-│   ├── package.json
-│   └── angular.json
-└── README.md
-```
+The requirements were short and didn't provide many details, so I had to make some assumptions and design the system based on my experience and logic. For example: "As an employee, I can request an absence". I didn't know if ONLY an employee could request an absence, but it made sense to me to allow managers and co-workers to request absences as well, so i implemented it like that. Or also: "As a co-worker, I can leave feedback". In my application, a manager can also leave feedback, as they are kinda like the administrator and have full access to everything. I wasn't completely sure about the practical difference between a co-worker and an employee, so I assumed something like: a co-worker works in the HR department and an employee is a regular employee. so the co-worker has access to the employee list with non-sensitive data, while the employee can only see their own profile data.
 
-## 🗄️ Data Model
+### Role-Based Access Control
+- **Manager**: Full access to all employee data, can edit profiles, see/create absences, view/give feedback
+- **Co-worker**: Can view all employee profiles (only non-sensitive data), see/create absences, view/give feedback to colleagues
+- **Employee**: Can only view their own profile data, see their absences, see feedback given to them, request absences
+- **Search Functionality**: Real-time search by name (only for managers and co-workers)
+
+### AI-Powered Feedback Enhancement
+- **Smart Enhancement**: i used OpenRouter API with Mistral 7B model to improve feedback quality and convert casual feedback into professional, constructive language
+
+### Absence Management
+- **Simple Workflow**: Everyone can request absences
+- **Date Validation**: Prevents invalid date ranges and past date requests
+
+## 🗄️ Data Models
 
 ### Core Entities
 
 #### Employee
-- **Personal Info**: Name, email, phone, birth date, address
-- **Employment**: Employee ID, position, department, hire date, salary
-- **Relationships**: Manager hierarchy, direct reports
-- **System Fields**: Active status, creation/update timestamps
+Represents an employee with personal information, employment details, and role-based access control.
 
 #### Feedback
-- **Content**: Title, content, rating (1-5), category, tags
-- **Relationships**: Employee (recipient), feedback giver
-- **Features**: Public/private, anonymous, AI enhancement support
-- **Status**: Active, archived, deleted
+Is a feedback given to an employee by a co-worker or manager.
 
 #### AbsenceRequest
-- **Details**: Type (vacation, sick, personal), start/end dates, reason
-- **Workflow**: Status (pending, approved, rejected), manager approval
-- **Features**: Half-day support, work delegation, emergency contacts
-- **Audit**: Request timestamp, approval timestamp, manager comments
+Represents a time-off request with an absence type, reason and date range.
 
-### Supporting Enums
-- **EmploymentStatus**: ACTIVE, INACTIVE, TERMINATED
-- **EmploymentType**: FULL_TIME, PART_TIME, CONTRACT, INTERN
-- **FeedbackType**: POSITIVE, CONSTRUCTIVE, MANAGER_FEEDBACK, PERFORMANCE_REVIEW
-- **FeedbackStatus**: ACTIVE, ARCHIVED, DELETED
-- **AbsenceType**: VACATION, SICK_LEAVE, PERSONAL_LEAVE, MATERNITY_LEAVE, etc.
-- **AbsenceStatus**: PENDING, APPROVED, REJECTED, CANCELLED
+### Enums
+- **EmploymentType**: Different employment arrangements (full-time, part-time, contract, etc.)
+- **FeedbackType**: Categories of feedback (positive, constructive, manager feedback, performance reviews)
+- **AbsenceType**: different absence types (from vacation to remote work)
+- **EmployeeRole**: Role of an employee to control access to data and features (manager, co-worker, employee)
 
-## 🚀 Getting Started
+## 🏛️ Architecture Decisions
+
+I designed this system with simplicity and maintainability in mind. Here's how I approached the key architectural choices:
+
+### Overall Architecture
+- I chose Angular, Spring Boot and Supabase as tech stack because I am familiar with them and they are easy to use.
+- In the backend I implemented clean separation with controllers, services, and repositories (the flow goes: controller -> service -> repository -> database)
+- Used JPA/Hibernate to help me create the database schema and object-relational mapping
+- Used RESTful APIs to provide a simple, predictable endpoint for each operation
+- Used environment variables for sensitive data
+- I chose not to use a package for state managament in the frontend (like NgRx) because i wanted to keep it simple and using signals was enough for this application
+- Used services in the frotnend to handle business logic and data access.
+- The project has MVVM architecture with components, services, and models. Angular works very well with this architecture, so i thought it was a good and straighforward choice for the project.
+- i used AI (Windsurf) to help me with some refactoring, to populate the database, provide me with ideas for models properties (example: role, department, address, etc. for the Employee model)
+- i also used AI to help me connect OpenRouter API with the application so that i could have AI-powered feedback enhancement
+
+### Future enhancements
+There are many things I would develop to complement this project. Some of them are:
+- add tests for each component, endpoints, services, methods
+- Implement create and delete operations for employees
+- Implement update and delete for feeebacm and absence requests
+- implement approval/rejection for absence requests
+- Increase search capabilities (search by phone number, address, etc.)
+- add filters (filter by role, department, etc.)
+- i hardcoded 3 users (one manager, one co-worker, one employee) for the role switcher, so i would do it properly and add authentication, login, etc.
+- I would add more fields to the models, like emergency contacts, updatedAt, etc.
+- improve and add more validation rules
+- i would use a state management package (like NgRx) to manage the state of the frontend
+
+The goal was to create a system that's easy to understand, extend, and maintain while providing real business value through role-based access control and AI-enhanced feedback.
+
+## 🚀 How to Run
 
 ### Prerequisites
-
 - **Java 17** or higher
 - **Node.js 18+** and npm
 - **Maven 3.6+**
 - **Supabase account** (for database)
+- **OpenRouter API token** (for AI enhancement)
 
 ### Backend Setup
 
@@ -98,13 +93,14 @@ employee-profile/
    cd backend
    ```
 
-2. Create a `.env` file with your Supabase credentials:
+2. Create a `.env` file with your credentials:
    ```env
    SUPABASE_DB_HOST=db.your-project-ref.supabase.co
    SUPABASE_DB_PORT=5432
    SUPABASE_DB_NAME=postgres
    SUPABASE_DB_USER=postgres
    SUPABASE_DB_PASSWORD=your-database-password
+   OPENROUTER_API_TOKEN=your-openrouter-token
    ```
 
 3. Install dependencies and run:
@@ -113,7 +109,7 @@ employee-profile/
    mvn spring-boot:run
    ```
 
-The backend will start on `http://localhost:8080` with automatic sample data initialization.
+Backend starts on `http://localhost:8080` with automatic sample data initialization.
 
 ### Frontend Setup
 
@@ -132,134 +128,4 @@ The backend will start on `http://localhost:8080` with automatic sample data ini
    ng serve
    ```
 
-The frontend will start on `http://localhost:4200`
-
-## 🔧 API Endpoints
-
-### Employee Management
-- `GET /api/employees` - Get all employees
-- `GET /api/employees/{id}` - Get employee by ID
-- `POST /api/employees` - Create new employee
-- `PUT /api/employees/{id}` - Update employee
-- `DELETE /api/employees/{id}` - Soft delete employee
-- `GET /api/employees/search?name={name}` - Search by name
-- `GET /api/employees/search?department={dept}` - Search by department
-- `GET /api/employees/search?position={pos}` - Search by position
-- `GET /api/employees/{id}/direct-reports` - Get direct reports
-- `GET /api/employees/managers` - Get all managers
-- `GET /api/employees/active` - Get active employees only
-
-### Feedback Management
-- `GET /api/feedback` - Get all feedback (role-based access)
-- `GET /api/feedback/public` - Get public feedback only
-- `GET /api/feedback/{id}` - Get feedback by ID
-- `POST /api/feedback` - Create new feedback
-- `PUT /api/feedback/{id}` - Update feedback
-- `DELETE /api/feedback/{id}` - Archive feedback
-- `GET /api/feedback/employee/{employeeId}` - Get feedback for employee
-- `GET /api/feedback/search?content={text}` - Search feedback content
-- `GET /api/feedback/category/{category}` - Get feedback by category
-- `GET /api/feedback/rating/{rating}` - Get feedback by rating
-- `GET /api/feedback/statistics/{employeeId}` - Get feedback statistics
-
-### Absence Request Management
-- `GET /api/absence-requests` - Get all absence requests
-- `GET /api/absence-requests/{id}` - Get request by ID
-- `POST /api/absence-requests` - Create new request
-- `PUT /api/absence-requests/{id}` - Update request
-- `DELETE /api/absence-requests/{id}` - Cancel request
-- `POST /api/absence-requests/{id}/approve` - Approve request (managers)
-- `POST /api/absence-requests/{id}/reject` - Reject request (managers)
-- `GET /api/absence-requests/employee/{employeeId}` - Get requests for employee
-- `GET /api/absence-requests/pending` - Get pending requests
-- `GET /api/absence-requests/current` - Get current absences
-- `GET /api/absence-requests/upcoming` - Get upcoming absences
-- `GET /api/absence-requests/manager/{managerId}` - Get requests for manager approval
-
-## 🎯 Key Features
-
-### Role-Based Access Control
-- **Manager**: Full access to department data, approval workflows
-- **Co-worker**: Public feedback access, limited employee info
-- **Employee**: Own data access, feedback submission
-
-### Advanced Search & Filtering
-- Multi-criteria search across all entities
-- Case-insensitive text search
-- Date range filtering
-- Status and type filtering
-- Pagination support
-
-### Business Logic
-- **Overlap Detection**: Prevents conflicting absence requests
-- **Approval Workflow**: Manager approval for absence requests
-- **Hierarchy Management**: Employee-manager relationships
-- **Soft Delete**: Data preservation with logical deletion
-- **Audit Trails**: Creation and update timestamps
-
-### Data Validation
-- Bean Validation annotations
-- Email format validation
-- Phone number pattern validation
-- Date range validation
-- Business rule enforcement
-
-## 🗄️ Database
-
-This project uses Supabase (PostgreSQL) for data persistence with the following features:
-
-### Configuration
-- Automatic schema generation with Hibernate
-- Connection pooling with HikariCP
-- Environment-based configuration
-- DDL auto-update for development
-
-### Sample Data
-The `DataInitializer` automatically creates sample data on first startup:
-- 6 employees with realistic hierarchy
-- 4 feedback entries with different types
-- 3 absence requests in various states
-
-### Performance Features
-- Indexed queries for common searches
-- Lazy loading for relationships
-- Pagination for large datasets
-- Optimized JPQL queries
-
-## 🔐 Security
-
-- Environment variables for sensitive data
-- CORS configuration for frontend integration
-- Input validation with Bean Validation
-- Secure credential management
-- SQL injection prevention with JPQL
-
-## 🛠️ Development
-
-### Running Tests
-
-Backend:
-```bash
-cd backend
-mvn test
-```
-
-Frontend:
-```bash
-cd frontend
-ng test
-```
-
-### Building for Production
-
-Backend:
-```bash
-cd backend
-mvn clean package
-```
-
-Frontend:
-```bash
-cd frontend
-ng build --configuration production
-```
+Frontend starts on `http://localhost:4200`
